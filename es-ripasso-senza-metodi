@@ -1,0 +1,39 @@
+import static utility.Tools.*;
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+        Random numeroRandom = new Random();
+
+        String[] opzioni = {"Menu", "Genera random", "Visualizzazione", "Fine"};
+        Menu(opzioni, tastiera);
+
+        boolean uscita = true;
+        final int MAXNUMERI = 100;
+        int[] nGenerati = new int[MAXNUMERI];
+
+        do{
+            switch (Menu(opzioni, tastiera)){
+                case 1:
+                    System.out.println("Genera random");
+                    for(int i = 0; i < MAXNUMERI; i++){
+                        nGenerati[i] = numeroRandom.nextInt(0, MAXNUMERI)+1;
+                    }
+                        break;
+
+                case 2:
+                    System.out.println("Visualizzazione");
+                    for (int i = 0; i < nGenerati.length; i++){
+                        System.out.println(nGenerati[i]);
+                    }
+                        break;
+
+                case 3:
+                    uscita = false;
+                        break;
+            }
+        } while (uscita);
+    }
+}

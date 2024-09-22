@@ -1,0 +1,71 @@
+import static utility.Tools.*;
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+
+        //opzioni del menu
+        String[] opzioni = {"Menu", "Genera Random", "Visualizza", "Fine"};
+
+        //dichiarazione variabili
+        boolean esci = true;
+        final int MAXNUMERI = 10;
+        int[] nEstratti = new int[MAXNUMERI];
+
+        //ciclo do-while che si ripete finchè non si digita 3 (esci)
+        do {
+            switch (Menu(opzioni, tastiera)) {
+                case 1:
+                    System.out.println("Generazione");
+                    generaNumeri(nEstratti);
+                    break;
+
+                case 2:
+                    System.out.println("Visualizzazione");
+                    visualizzaNumeri(nEstratti);
+                    break;
+
+                case 3:
+                    System.out.println("Fine");
+                    esci = false;
+                    break;
+            }
+        } while (esci);
+    }
+
+    //metodo per generare dei numeri random
+    public static void generaNumeri(int[] vettore) {
+        Random numeroRandom = new Random();
+        int cont = 0;
+
+        while (cont < vettore.length) {
+
+            int numeroGenerato = numeroRandom.nextInt(vettore.length) + 1;
+
+            if (!controlloNumVettore(vettore, numeroGenerato, cont)) {
+                vettore[cont] = numeroGenerato;
+
+                cont++;
+            }
+        }
+    }
+
+    //metodo controllare se un numero esiste già nell'array
+    public static boolean controlloNumVettore(int[] vettore, int numero, int limite) {
+        for (int i = 0; i < limite; i++) {
+            if (vettore[i] == numero) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //metodo per la visualizzazione dei numeri generati
+    public static void visualizzaNumeri(int[] vettore) {
+        for (int i = 0; i < vettore.length; i++) {
+            System.out.println(vettore[i]);
+        }
+    }
+}

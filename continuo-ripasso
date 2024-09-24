@@ -1,0 +1,132 @@
+import static utility.Tools.*;
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+
+        //opzioni del menu
+        String[] opzioni = {"Menu", "Genera Random", "Visualizza", "Controllo numero", "Fine"};
+
+        //dichiarazione variabili
+        boolean esci = true;
+        final int MAXNUMERI = 50;
+        int[] nEstratti = new int[MAXNUMERI];
+        int numControllo;
+        int risposta;
+        boolean uscitaRisposta;
+
+        //ciclo do-while che si ripete finchè non si digita 3 (esci)
+        do {
+            switch (Menu(opzioni, tastiera)) {
+
+                case 1:
+                    System.out.println("Generazione");
+                    generaNumeri(nEstratti);
+                    break;
+
+                case 2:
+                    System.out.println("Visualizzazione");
+                    visualizzaNumeri(nEstratti);
+                    break;
+
+                case 3:
+                    System.out.println("Che numero vuoi controllare che sia presente nel vettore");
+                    numControllo = Integer.parseInt(tastiera.nextLine());
+
+                    if(controlloNumero(numControllo, nEstratti)){
+                        System.out.println("Il numero è presente nel vettore");
+                        System.out.println("Vuoi sapere in quale posizione si trova?");
+                        do {
+
+                            System.out.println("Inserisci 0 per NO e 1 per SI");
+                            risposta = tastiera.nextInt();
+
+                            if (risposta == 0){
+                                uscitaRisposta = false;
+                            } else if (risposta == 1){
+                                uscitaRisposta = true;
+                            } else {
+                                System.out.println("Non hai inserito ne 0 ne 1");
+                                uscitaRisposta = false;
+                            }
+
+                        } while (uscitaRisposta);
+
+                        controlloPosizione(numControllo, nEstratti);
+                        System.out.println("Il numero si trova alla ");
+
+                    } else {
+                        System.out.println("Il numero non è presente nel vettore");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Fine");
+                    esci = false;
+                    break;
+
+            }
+        } while (esci);
+    }
+
+    //metodo per generare dei numeri random
+    public static void generaNumeri(int[] vettore) {
+        Random numeroRandom = new Random();
+        int cont = 0;
+
+        while (cont < vettore.length) {
+
+            int numeroGenerato = numeroRandom.nextInt(vettore.length) + 1;
+
+            if (!controlloNumVettore(vettore, numeroGenerato, cont)) {
+                vettore[cont] = numeroGenerato;
+
+                cont++;
+            }
+        }
+    }
+
+    //metodo controllare se un numero esiste già nell'array
+    public static boolean controlloNumVettore(int[] vettore, int numero, int limite) {
+        for (int i = 0; i < limite; i++) {
+            if (vettore[i] == numero) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //metodo per la visualizzazione dei numeri generati
+    public static void visualizzaNumeri(int[] vettore) {
+        int cont = 0;
+            for (int i = 0; i < vettore.length; i++) {
+                System.out.print(vettore[i] + " ");
+                cont++;
+                if (cont == 10){
+                    System.out.println(" ");
+                    cont = 0;
+                }
+            }
+    }
+
+    //metodo per controllare se il numero scelto è presente o no nel vettore
+    public static boolean controlloNumero(int num, int[] vettore) {
+        for(int i = 0; i < vettore.length; i++){
+            if (vettore[i] == num){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int controlloPosizione(int num, int[] vettore) {
+        for(int i = 0; i < vettore.length; i++){
+            if (vettore[i] == num){
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+}

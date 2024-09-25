@@ -80,6 +80,7 @@ public class Main {
                         cancNum = Integer.parseInt(tastiera.nextLine());
                     } while (cancNum < 1 || cancNum > 50);
 
+                    System.out.println("E'stato cancellato il numero " + cancNum + " dal vettore");
                     nEstratti = cancellaNum(cancNum, nEstratti);
                     break;
 

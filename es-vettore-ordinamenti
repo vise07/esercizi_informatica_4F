@@ -1,0 +1,265 @@
+import static utility.Tools.*;
+import java.util.Scanner;
+import java.util.Random;
+//import java.util.Arrays;
+
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+
+
+        //opzioni del menu
+        String[] opzioni = {"Menu", "Genera Random", "Visualizza", "Controllo numero", "Ordina vettore", "Cancella numero", "Raddoppia vettore", "Fine"};
+
+
+        //dichiarazione variabili
+        boolean esci = true;
+        int MAXNUMERI = 50;
+        int[] nEstratti = new int[MAXNUMERI];
+        int numControllo;
+        int risposta;
+        int pos;
+        int cancNum;
+        boolean uscitaRisposta;
+
+
+        //ciclo do-while che si ripete finchè non si digita 3 (esci)
+        do {
+            switch (Menu(opzioni, tastiera)) {
+
+
+                case 1 -> {
+                    System.out.println("Generazione");
+                    generaNumeri(nEstratti);
+                }
+
+
+                case 2 -> {
+                    System.out.println("Visualizzazione");
+                    visualizzaNumeri(nEstratti);
+                }
+
+
+                case 3 -> {
+                    System.out.println("Che numero vuoi controllare che sia presente nel vettore");
+                    numControllo = Integer.parseInt(tastiera.nextLine());
+
+                    if (controlloNumero(numControllo, nEstratti)) {
+                        System.out.println("Il numero è presente nel vettore");
+                        System.out.println("\nVuoi sapere in quale posizione si trova?");
+                        do {
+
+                            System.out.println("Inserisci 0 per NO e 1 per SI");
+                            risposta = Integer.parseInt(tastiera.nextLine());
+
+                            if (risposta == 0) {
+                                uscitaRisposta = false;
+                            } else if (risposta == 1) {
+                                pos = controlloPosizione(numControllo, nEstratti);
+                                System.out.println("Il numero si trova alla " + pos + " posizione");
+                                uscitaRisposta = false;
+                            } else {
+                                System.out.println("Non hai inserito ne 0 ne 1");
+                                uscitaRisposta = true;
+                            }
+
+                        } while (uscitaRisposta);
+
+                    } else {
+                        System.out.println("Il numero non è presente nel vettore");
+                    }
+                }
+
+
+                case 4 -> {
+                    int ris;
+                    do {
+                        System.out.println("Inserisci 1 per ordinare il vettore e 0 per lasciarlo così");
+                        ris = Integer.parseInt(tastiera.nextLine());
+                        if (ris == 1) {
+                            nEstratti = ordinaVettoreCrescente(nEstratti);
+                        } else if (ris == 0) {
+                            System.out.println("Il vettore non è stato ordinato");
+                        }
+                    } while (ris != 0 && ris != 1);
+                }
+
+
+                case 5 -> {
+                    do {
+                        System.out.println("Che numero vuoi cancellare dal vettore");
+                        cancNum = Integer.parseInt(tastiera.nextLine());
+                    } while (cancNum < 1 || cancNum > 50);
+
+                    System.out.println("E'stato cancellato il numero " + cancNum + " dal vettore");
+                    nEstratti = cancellaNum(cancNum, nEstratti);
+                }
+
+
+                case 6 -> {
+                    System.out.println("Il vettore viene raddoppiato lasciato invariati i numeri del primo vettore");
+                    nEstratti = raddoppiaVettore(nEstratti);
+                }
+
+
+                case 7 -> {
+                    System.out.println("Fine");
+                    esci = false;
+                }
+
+            }
+        } while (esci);
+    }
+
+
+
+    //metodo per generare dei numeri random
+    public static void generaNumeri(int[] vettore) {
+        Random numeroRandom = new Random();
+        int cont = 0;
+
+        while (cont < vettore.length) {
+
+            int numeroGenerato = numeroRandom.nextInt(vettore.length) + 1;
+
+            if (!controlloNumVettore(vettore, numeroGenerato, cont)) {
+                vettore[cont] = numeroGenerato;
+
+                cont++;
+            }
+        }
+    }
+
+
+
+    //metodo controllare se un numero esiste già nell'array
+    public static boolean controlloNumVettore(int[] vettore, int numero, int limite) {
+        for (int i = 0; i < limite; i++) {
+            if (vettore[i] == numero) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    //metodo per la visualizzazione dei numeri generati
+    public static void visualizzaNumeri(int[] vettore) {
+        int cont = 0;
+        for (int i = 0; i < vettore.length; i++) {
+            System.out.print(vettore[i] + " ");
+            cont++;
+            if (cont == 10){
+                System.out.println(" ");
+                cont = 0;
+            }
+        }
+        System.out.println("");
+    }
+
+
+
+    //metodo per controllare se il numero scelto è presente o no nel vettore
+    public static boolean controlloNumero(int num, int[] vettore) {
+        for(int i = 0; i < vettore.length; i++){
+            if (vettore[i] == num){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    //metodo che indica la posizione in cui si trova il numero richiesto dall'utente
+    public static int controlloPosizione(int num, int[] vettore) {
+        int posizione = 0;
+        for(int i = 0; i < vettore.length; i++){
+            if (vettore[i] == num){
+                posizione = i + 1;
+            }
+        }
+        return posizione;
+    }
+
+
+
+    //metodo che crea un nuovo vettore, e quando trova il numero da cancellare non lo aggiunge al nuovo vettore
+    public static int [] cancellaNum (int numCanc, int[] vettore) {
+        int[] newArray = new int[vettore.length - 1];
+        int j = 0;
+
+        for (int i = 0; i < vettore.length; i++) {
+            if (vettore[i] != numCanc) {
+                newArray[j++] = vettore[i];
+            }
+        }
+        return newArray;
+    }
+
+
+
+    //metodo che ordina un vettore
+    public static int [] ordinaVettoreCrescente (int[] vettore) {
+        
+        //ordinamento del vettore con il metodo SORT()
+
+        //Arrays.sort(vettore);
+
+
+
+        //ordinamento per BUBBLE SORT
+
+        /*
+        int temp = 0;
+        int cont;
+
+        for (int i = 0; i < vettore.length; i++) {
+            cont = i + 1;
+            for (int j = 1; j < (vettore.length - i); j++) {
+                if (vettore[j - 1] > vettore[j]) {
+                    temp = vettore[j - 1];
+                    vettore[j - 1] = vettore[j];
+                    vettore[j] = temp;
+                }
+            }
+        }
+        */
+
+
+
+        //ordinamento per SELECTION SORT
+
+        int n = vettore.length;
+        for (int i = 0; i < n - 1; i++) {
+            int min = i;
+            for (int j = i + 1; j < n; j++) {
+                if (vettore[j] < vettore[min]) {
+                    min = j;
+                }
+            }
+            int temp = vettore[min];
+            vettore[min] = vettore[i];
+            vettore[i] = temp;
+        }
+
+        return vettore;
+    }
+
+
+
+    /*metodo che raddoppia la lunghezza del vettore iniziale lasciando la posizione dei numeri
+    del vettore iniziale invariati e aggiungendo altri 50 numeri random al vettore finale*/
+    public static int [] raddoppiaVettore (int[] vettore) {
+        int[] newVettore = new int[vettore.length * 2];
+        int j = 0;
+
+        for (int i = 0; i < vettore.length; i++) {
+            newVettore[j++] = vettore[i];
+        }
+
+        return newVettore;
+    }
+}

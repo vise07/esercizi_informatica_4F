@@ -1,0 +1,42 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int [] valori = {1, 2, 1, 4, 1, 7, 10, 1};
+        int num;
+
+        System.out.println("Che numero vuoi cercare nel vettore:");
+        num = sc.nextInt();
+
+        valori = findAll(valori, num);
+
+        for (int i = 0; i < valori.length; i++){
+            System.out.println("" + valori [i]);
+        }
+    }
+
+    public static int [] findAll (int [] vettore, int cerca) {
+        int cont = 0;
+
+        for (int i = 0; i < vettore.length; i++){
+            if (vettore[i] == cerca){
+                cont++;
+            }
+        }
+
+        if (cont > 0) {
+            int[] pos = new int[cont];
+            int j = 0;
+
+            for (int i = 0; i < vettore.length; i++) {
+                if (vettore[i] == cerca) {
+                    pos[j++] = i;
+                }
+            }
+            return pos;
+        }
+        return null;
+    }
+}

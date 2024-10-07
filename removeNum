@@ -1,0 +1,102 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int lung;
+        int num;
+
+        //ciclo do-while per inserire una lunghezza al vettore > 0
+        do {
+            System.out.println("Inserisci la lunghezza del vettore (deve essere maggiore di 0)");
+            lung = sc.nextInt();
+        } while (lung <= 0);
+
+        int[] vettore = new int[lung];
+
+        System.out.println("\nInserisci i numeri che compongo il vettore");
+
+        //ciclo for per popolare il vettore
+        for(int i = 0; i < vettore.length; i++) {
+            vettore[i] = sc.nextInt();
+        }
+
+        System.out.println("\nInserisci il numero che vuoi cancellare dal vettore");
+        num = sc.nextInt();
+
+        //invocazione del metodo
+        int[] newVettore = removeNum(vettore, num);
+
+        if(!test(vettore, newVettore, num)) {
+            System.out.println("\nIl metodo removeNum non funziona correttamente");
+        } else {
+
+            System.out.println("\nIl metodo removeNum funziona correttamente");
+
+            System.out.println("\nIl vettore finale con il numero " + num + " cancellato è");
+
+            //ciclo for per visualizzare tutti i contenuti delle celle del nuovo vettore
+            for (int i : newVettore) {
+                System.out.println(i);
+            }
+        }
+    }
+
+
+
+    //metodo che rimuove un numero dal vettore tutte le volte che è presente
+    public static int[] removeNum(int[] array, int n) {
+
+        int cont = 0;
+        int[] newArray = null;
+
+        //ciclo for per contare quante volte il numero che vogliamo cancellare è presente nel vettore
+        for(int i = 0; i < array.length; i++) {
+            if(array[i] == n) {
+                cont++;
+            }
+        }
+
+        //se il numero che vogliamo cancellare è presente almeno una volta nel vettore allora si procede
+        if(cont > 0) {
+            int j = 0;
+            newArray = new int[array.length - cont];
+
+            //ciclo for per assegnare al nuovo vettore tutti i numeri del vecchio meno quelli indicati
+            for(int i = 0; i < array.length; i++) {
+                if(array[i] != n) {
+                    newArray[j++] = array[i];
+                }
+            }
+        }
+
+        //return (se la variabile cont fosse <= 0 si ritorna null, viceversa se fosse > 0 si ritorna il nuovo vettore)
+        return newArray;
+    }
+
+
+
+    //metodo per verificare che il metodo removeNum funzioni correttamente
+    public static boolean test(int[] array, int[] newArray, int n) {
+
+        int[] verifica = removeNum(array, n);
+
+        //se la lunghezza dei due vettori è diversa = false
+        if (verifica.length != newArray.length) {
+            return false;
+        }
+
+        //ciclo for per scorrere il vettore verifica
+        for (int i = 0; i < verifica.length; i++) {
+
+            //se i valori delle celle dei due vettori sono differenti = false
+            if (verifica[i] != newArray[i]) {
+                return false;
+            }
+        }
+
+        //return (lunghezza diversa = false, valori diversi = false, vettori uguali = true)
+        return true;
+    }
+}

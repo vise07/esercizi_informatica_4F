@@ -1,0 +1,30 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int eta;
+        boolean uscita;
+
+        
+        do {
+
+            try {
+                System.out.println("Inserisci l'età:");
+                eta = Integer.parseInt(sc.nextLine());
+                uscita = true;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Non è un età.");
+                System.out.println(e.getMessage());
+                uscita = false;
+                eta = 0;
+            }
+
+        } while (!uscita);
+
+        System.out.println("L'età è " + eta);
+        
+    }
+}

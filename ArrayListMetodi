@@ -1,0 +1,47 @@
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+
+        //creazione di una nuova lista
+        ArrayList<Integer> arrayDiProva = new ArrayList<>();
+
+        //metodo per aggiungere elementi nella lista aggiungendo una cella alla fine e mettendo dentro l'elemento
+        arrayDiProva.add(10);
+        arrayDiProva.add(20);
+        arrayDiProva.add(30);
+
+        //metodo per aggiungerre un elemento (alla cella num x si aggiunge l'elemento y, le altre celle vengono spostate verso la fine
+        arrayDiProva.add(1, 57);
+
+        //metodo per visualizzare gli elementi della lista con un for each
+        arrayDiProva.forEach(System.out::println);
+
+        //metodo size che da la dimensione della lista
+        System.out.println("Dimensione lista: " + arrayDiProva.size());
+
+        //metodo get che da l'elemento della cella x
+        System.out.println("Elemento in posizione 4: " + arrayDiProva.get(3));
+
+        //metodo che rimuove la cella x
+        arrayDiProva.remove(3);
+        System.out.println("Elemento 4 cancellato");
+        arrayDiProva.forEach(System.out::println);
+
+        /*arrayDiProva.remove(arrayDiProva.getFirst());
+        arrayDiProva.remove(arrayDiProva.getLast());*/
+
+        //metodo che rimuove accorciando la dimensione della lista sottrandola a x, vengono cancellate le ultime x celle
+        arrayDiProva.remove(arrayDiProva.size() - 2);
+        System.out.println("Elementi rimasti");
+        arrayDiProva.forEach(System.out::println);
+
+        //metodo per verificare se la lista contiene un certo numero x
+        if (arrayDiProva.contains(40)) {
+            System.out.println("Il numero 40 è presente");
+        } else {
+            System.out.println("Non c'è");
+        }
+        //if else per dire se è presente o no
+    }
+}

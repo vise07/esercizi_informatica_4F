@@ -15,6 +15,7 @@ public class Main {
         arrayDiProva.add(1, 57);
 
         //metodo per visualizzare gli elementi della lista con un for each
+        System.out.println("La lista contiene 4 elementi");
         arrayDiProva.forEach(System.out::println);
 
         //metodo size che da la dimensione della lista
@@ -43,5 +44,56 @@ public class Main {
             System.out.println("Non c'è");
         }
         //if else per dire se è presente o no
+
+        //metodo che aggiunge un elemento alla prima cella
+        arrayDiProva.addFirst(5);
+
+        //metodo che aggiunge un elemeneto all'ultima cella
+        arrayDiProva.addLast(34);
+
+        System.out.println("Lista dopo aver inserito 2 nuovi numeri");
+        arrayDiProva.forEach(System.out::println);
+
+        //metodo per prendere l'elemento della prima cella
+        System.out.println("Primo elemento della lista");
+        System.out.println(arrayDiProva.getFirst());
+
+        //metodo per prendere l'elemento dell'ultima cella
+        System.out.println("Ultimo elemento della lista");
+        System.out.println(arrayDiProva.getLast());
+
+        //metodo che rimuove la prima cella della lista
+        arrayDiProva.removeFirst();
+
+        //metodo che rimuove l'ultima cella della lista
+        arrayDiProva.removeLast();
+        System.out.println("Lista dopo aver rimosso la prima e l'ultima cella della lista");
+        arrayDiProva.forEach(System.out::println);
+
+        //metodo che inverte l'intera lista
+        System.out.println("Lista dopo averla invertita");
+        System.out.println(arrayDiProva.reversed());
+
+        //metodo che svuota tutta la lista
+        arrayDiProva.clear();
+        
+        //metodo
+        if(arrayDiProva.isEmpty()) {
+            System.out.println("La lista ora è vuota");
+        } else {
+            System.out.println("La lista non e vuota");
+        }
+
+        //metodo
+        //System.out.println(arrayDiProva.indexOf(2));
+
+        //metodo
+        //System.out.println(arrayDiProva.lastIndexOf(3));
+
+        //metodo
+        //arrayDiProva.set();
+
+        //metodo
+        //arrayDiProva.equals();
     }
 }

@@ -1,0 +1,206 @@
+package frontScreen;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+import static utility.Tools.*;
+import mensola.*;
+
+
+public class FrontEnd {
+
+
+    //METODO PER LEGGERE UN LIBRO
+    public static Libro leggiLibro(Scanner keyboard) {
+
+        //opzioni da dare al menu che si trova nella classe Tools
+        String[] opzioni = {"SCEGLI TIPO", "ROMANZO", "MANUALE", "THRILLER"};
+
+        //creazione di un nuovo libro (variabile di tipo 'Libro' -> classe Libro = variabili Libro)
+        Libro l = new Libro();
+
+        //inserimento dati del libro con variabili presenti nella classe Libro
+        System.out.println("Inserisci l'autore");
+        l.autore = keyboard.nextLine();
+        System.out.println("Inserisci il titolo");
+        l.titolo = keyboard.nextLine();
+
+        //scelta = boolean per inserire solo autore e titolo che servono solo questi 2 dati per alcuni dati o la lettura intera del libro
+        //(scelta è inizializzata a true o false all'inizio dei metodi che necessitano questo metodo in base alla loro funzione)
+
+        System.out.println("Inserisci le pagine");
+        l.pagine = (Integer.parseInt(keyboard.nextLine()));
+        System.out.println("Inserisci il tipo");
+
+        //switch-case per inserire il tipo di libro
+        switch (Menu(opzioni, keyboard)) {
+            case 1 -> l.tipo = Genere.ROMANZO;
+            case 2 -> l.tipo = Genere.MANUALE;
+            case 3 -> l.tipo = Genere.THRILLER;
+        }
+
+        //inserimento della data con il formato scelto
+        System.out.println("Inserisci la data di pubblicazione in gg-mm-aaaa");
+        l.dataDiPubblicazione = LocalDate.parse(keyboard.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+
+        //ritrono del libro
+        return l;
+    }
+
+
+
+    //METODO CASE 1 -> INSERIMENTO
+    //metodo che invoca un altro metodo che si trova nella classe FrontEnd che serve a inserire tutti i dati di un nuovo libro
+    public static Libro inserisciLibro(Scanner sc, int contaLibri, ArrayList<Libro> Mensola, double costoTotale) {
+
+        Mensola.add(contaLibri, FrontEnd.leggiLibro(sc));
+
+        return Mensola.get(contaLibri);
+    }
+
+
+
+    //METODO CASE 1 -> CONTROLLO X INSERIMENTO
+    //metodo che controlla se il libro inserito è un doppione o no
+    public static int controlloLibro(ArrayList<Libro> Mensola, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (Mensola.get(i).autore.equalsIgnoreCase(newLibro.autore) && Mensola.get(i).titolo.equalsIgnoreCase(newLibro.titolo)) {
+                //il libro è un doppione
+                return i;
+            }
+
+        }
+        //il libro non è un doppione
+        return -1;
+
+    }
+
+
+
+    //METODO CASE 3 -> RICERCA AUTORE E TITOLO
+    //metodo che confronta autore e titolo del libro scelto con i libri della mensola
+    public static boolean ricercaLibro1(ArrayList<Libro> Mensola, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (Mensola.get(i).autore.equalsIgnoreCase(newLibro.autore) && Mensola.get(i).titolo.equalsIgnoreCase(newLibro.titolo)) {
+                //il libro è un doppione
+                return true;
+            }
+
+        }
+        //il libro non è un doppione
+        return false;
+    }
+
+    //METODO CASE 3 -> RICERCA X AUTORE E TITOLO
+    //metodo che confronta autore e titolo del libro scelto con i libri della mensola, ritorna la cella della lista in cui si trova
+    public static int ricercaLibroAutoreTitolo(ArrayList<Libro> Mensola, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (Mensola.get(i).autore.equalsIgnoreCase(newLibro.autore) && Mensola.get(i).titolo.equalsIgnoreCase(newLibro.titolo)) {
+                //il libro è un doppione
+                return i;
+            }
+
+        }
+        //il libro non è un doppione
+        return -1;
+    }
+
+
+
+    //METODO CASE 4 -> CONTROLLO TITOLO LIBRI
+    //metodo che confronta titolo del libro scelto con i libri della mensola
+    public static boolean ricercaLibro2(ArrayList<Libro> Mensola, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (Mensola.get(i).titolo.equalsIgnoreCase(newLibro.titolo)) {
+                //il libro è un doppione
+                return true;
+            }
+
+        }
+        //il libro non è un doppione
+        return false;
+    }
+
+    //METODO CASE 4 -> CONTROLLO TITOLO LIBRI
+    //metodo che confronta titolo del libro scelto con i libri della mensola, stampa le celle che hanno lo stesso titolo del libro scelto
+    public static void ricercaLibroTitolo(ArrayList<Libro> Mensola, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (Mensola.get(i).titolo.equalsIgnoreCase(newLibro.titolo)) {
+                System.out.println(Mensola.get(i).formattaDati());
+            }
+
+        }
+    }
+
+
+
+    //METODO CASE 5 -> ELIMINAZIONE SINGOLA
+    //metodo per rimuovere un libro dalla mensola avendo inserito il titolo e l'autore del libro
+    public static boolean rimuoviLibro(ArrayList<Libro> Mensola, int contaLibri, Libro libroDaEliminare) {
+
+        boolean test = false;
+
+        for(int i = 0; i < contaLibri; i++) {
+            if (Mensola.get(i).autore.equalsIgnoreCase(libroDaEliminare.autore) && Mensola.get(i).titolo.equalsIgnoreCase(libroDaEliminare.titolo)) {
+                Mensola.remove(i);
+                test = true;
+            }
+        }
+
+        return test;
+
+    }
+
+
+
+    //METODO CASE 6 -> ELIMINAZIONE X TITOLO
+    //metodo per rimuovere uno o più libri dalla mensola avendo inserito solo il titolo
+    public static int rimuoviLibri(ArrayList<Libro> Mensola, int contaLibri, Libro libriRemove) {
+
+        int cont = 0;
+
+        for(int i = 0; i < contaLibri; i++) {
+            if (Mensola.get(i).titolo.equalsIgnoreCase(libriRemove.titolo)) {
+                Mensola.remove(i);
+                cont++;
+            }
+        }
+
+        return cont;
+    }
+
+
+
+    //METODO CASE 7 -> MODIFICA DATA
+    //metodo che mofica la data di un libro dato autore e titolo
+    public static ArrayList<Libro> modificaLibro(ArrayList<Libro> Mensola, int contaLibri, Scanner sc) {
+
+        Libro libroDaModificare;
+        boolean scelta = false;
+
+        libroDaModificare = FrontEnd.leggiLibro(sc);
+
+        for(int i = 0; i < contaLibri; i++) {
+
+            if(Mensola.get(i).autore.equalsIgnoreCase(libroDaModificare.autore) && Mensola.get(i).titolo.equalsIgnoreCase(libroDaModificare.titolo)) {
+
+                //Inserimento della nuova data di pubblicazione del libro
+                System.out.println("Inserisci la nuova data di pubblicazione in gg-mm-aaaa");
+                Mensola.get(i).dataDiPubblicazione = LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            }
+        }
+        return Mensola;
+    }
+}

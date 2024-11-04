@@ -1,0 +1,20 @@
+package lunaPark;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class Persona {
+    public int numeroBiglietto;
+    public int numeroGiostre;
+    public Genere tipo;
+    public LocalTime orarioGiostra;
+    private DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("ss-mm-hh");
+
+    public String personaInfo() {
+        return String.format("Numero biglietto: %d Numero giostre: %d Genere: %s Data: %s", numeroBiglietto, numeroGiostre, tipo, orarioGiostra.format(dataFormat));
+    }
+
+    public String numBiglietto() {
+        return String.format("Numero biglietto: %d", numeroBiglietto);
+    }
+}

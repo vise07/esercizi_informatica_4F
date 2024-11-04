@@ -1,0 +1,152 @@
+import static utility.Tools.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        final int MAXAUTOMOBILI = 5;
+        ArrayList<Automobile> Concessionaria = new ArrayList<>(MAXAUTOMOBILI);
+        boolean uscita = true;
+
+        String[] opzioni = {"MENU", "INSERIMENTO", "ELIMINAZIONE X MARCA E MODELLO", "VISUALIZZA", "FINE"};
+
+        try {
+
+            do {
+
+                switch (Menu(opzioni, sc)) {
+
+                    case 1 -> {
+
+                        try {
+
+                            if (Concessionaria.size() < MAXAUTOMOBILI) {
+
+                                Automobile newAuto = inserimentoAutomobile(sc);
+
+                                int test = controlloDoppioni(Concessionaria, newAuto);
+
+                                if (test == -1) {
+
+                                    Concessionaria.add(newAuto);
+
+                                } else {
+                                    System.out.println("L'auto che vuoi inserire è già presente nella concessionaria.");
+                                }
+
+                                System.out.println("L'inserimento del libro non ha avuto successo.");
+
+                            } else {
+                                System.out.println("La concessionaria è piena, non si posso aggiungere nuove auto.");
+                            }
+
+                        } catch (Exception e) {
+                            System.out.println("L'inserimento del libro non ha avuto successo");
+                            System.out.println(e.getMessage());
+                        }
+
+                    }
+
+                    case 2 -> {
+
+                        if (!Concessionaria.isEmpty()) {
+
+                            Automobile autoDaEliminare = new Automobile();
+
+                            System.out.println("Inserisci la marca dell'auto:");
+                            autoDaEliminare.marca = sc.nextLine();
+
+                            System.out.println("Inserisci il modello dell'auto:");
+                            autoDaEliminare.modello = sc.nextLine();
+
+                            eliminaAuto(Concessionaria, autoDaEliminare);
+
+                        } else {
+                            System.out.println("La concessionaria è vuota, non ci sono auto da visualizzare.");
+                        }
+
+                    }
+
+                    case 3 -> {
+
+                        if (!Concessionaria.isEmpty()) {
+
+                            System.out.println("Il numero di auto che ci sono nella concessionaria è " + Concessionaria.size() + " e sono:");
+                            Concessionaria.forEach(a -> System.out.println(a.toString()));
+
+                        } else {
+                            System.out.println("La concessionaria è vuota, non ci sono auto da visualizzare.");
+                        }
+
+
+                    }
+                    case 4 -> {
+                        uscita = false;
+                    }
+                }
+
+            } while (uscita);
+
+        } catch (Exception e) {
+            System.out.println("La scelta inserita è errata.");
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Fine programma.");
+    }
+
+
+    //metodo per inserire un auto nuova
+    public static Automobile inserimentoAutomobile(Scanner sc) {
+
+        Automobile auto = new Automobile();
+
+        System.out.println("Inserisci la marca dell'auto:");
+        auto.marca = sc.nextLine();
+
+        System.out.println("Inserisci il modello dell'auto:");
+        auto.modello = sc.nextLine();
+
+        System.out.println("Inserisci la data di produzione dell'auto in gg-mm-aaaa:");
+        auto.dataDiProduzione = LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        System.out.println("Inserisci la cilindrata dell'auto:");
+        auto.cilindrata = Integer.parseInt(sc.nextLine());
+
+        return auto;
+    }
+
+
+    //metodo per controllare se l'auto che si vuole inserire sia già stata inserita o no
+    public static int controlloDoppioni(ArrayList<Automobile> concessionara, Automobile newAuto) {
+
+        for (int i = 0; i < concessionara.size(); i++) {
+
+            if (concessionara.get(i).marca.equalsIgnoreCase(newAuto.marca) && concessionara.get(i).modello.equalsIgnoreCase(newAuto.modello)) {
+                return i;
+            }
+
+        }
+
+        return -1;
+    }
+
+
+    //metodo per eliminare un auto dato marca e modello
+    public static void eliminaAuto(ArrayList<Automobile> concessionaria, Automobile autoDaEliminare) {
+
+        for(int i = 0; i < concessionaria.size(); i++) {
+
+            if(concessionaria.get(i).marca.equalsIgnoreCase(autoDaEliminare.marca) && concessionaria.get(i).modello.equalsIgnoreCase(autoDaEliminare.modello)) {
+                concessionaria.remove(i);
+            }
+
+        }
+    }
+}

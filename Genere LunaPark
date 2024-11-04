@@ -1,0 +1,8 @@
+package lunaPark;
+
+public enum Genere {
+    RUOTA_PANORAMICA,
+    AUTOSCONTRI,
+    OTTOVOLANTE,
+    TAGADA
+}

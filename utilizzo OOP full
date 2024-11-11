@@ -1,0 +1,90 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+            try {
+
+                System.out.println("Inserisci la coordinata x del tuo punto:");
+                double x = sc.nextDouble();
+
+                System.out.println("Inserisci la coordinata x del tuo punto:");
+                double y = sc.nextDouble();
+
+                Punto newPunto = new Punto(x, y);
+
+                System.out.println(newPunto.toString());
+                System.out.println("Il punto (" + newPunto.getPuntoX() + ", " + newPunto.getPuntoY() + ") si trova nel" + newPunto.determinaQuadrante());
+
+            } catch(Exception e) {
+                System.out.println("ERRORE");
+                System.out.println(e.getMessage());
+            }
+    }
+}
+
+
+
+
+
+
+
+
+
+public class Punto {
+    private double x;
+    private double y;
+
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setPuntoX(double x) {
+        this.x = x;
+    }
+    public double getPuntoX() {
+        return x;
+    }
+
+    public void setPuntoY(double y) {
+        this.y = y;
+    }
+    public double getPuntoY() {
+        return y;
+    }
+
+    public String determinaQuadrante() {
+
+        if(x > 0 && y > 0) {
+            return " 1° quadrante.";
+        }
+        else if(x < 0 && y > 0) {
+            return " 2° quadrante.";
+        }
+        else if(x < 0 && y < 0) {
+            return " 3° quadrante.";
+        }
+        else if(x > 0 && y < 0) {
+            return " 4° quadrante.";
+        }
+        else if(x == 0 && y != 0) {
+            return "le asse delle ordinate.";
+        }
+        else if(x != 0 && y == 0) {
+            return "le asse delle ascisse.";
+        }
+        else {
+            return "l'origine.";
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + getPuntoX() + " y: " + getPuntoY();
+    }
+
+}

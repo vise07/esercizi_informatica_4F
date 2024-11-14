@@ -1,0 +1,185 @@
+import static utility.Tools.*;
+import mensola.*;
+import frontScreen.*;
+import java.awt.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner tastiera = new Scanner(System.in);
+
+
+        //dichiarazione variabili
+        final int MAXLIBRI = 5;
+        Libro[] Mensola = new Libro[MAXLIBRI];
+        int contaLibri = 0;
+        double costoTotale = 0.0;
+        boolean uscita = true;
+
+
+        //opzioni da dare al menu che si trova nella classe Tools
+        String[] opzioni = {"MENU", "INSERIMENTO", "VISUALIZZAZIONE", "ELIMINAZIONE SINGOLA", "ELIMINAZIONE X TITOLO", "RICERCA SINGOLA", "RICERCA X TITOLO", "MODIFICA DATA", "FINE"};
+
+
+        //ciclo do-while per far visualizzare il menu finché l'uscita non è false
+        do {
+
+
+            //switch-case per visualizzare il menu e inserire la scelta dell'utente
+            switch (Menu(opzioni, tastiera)) {
+
+
+                //case 1 = inserimeto di un libro, nel caso la mensola sia piena non aggiunge nulla
+                case 1 -> {
+
+                    if (contaLibri < MAXLIBRI) {
+                        Libro newLibro = FrontEnd.inserisciLibro(tastiera, contaLibri, Mensola, costoTotale);
+
+                        if(!FrontEnd.ricercaLibro(Mensola, contaLibri, newLibro)) {
+                            Mensola[contaLibri] = newLibro;
+                            contaLibri++;
+                            System.out.println("Il libro è stato inserito nella mensola");
+                        } else {
+                            System.out.println("Il libro è un doppione, non è stato inserito nella mensola");
+                        }
+
+                    } else {
+                        System.out.println("Non puoi aggiungere ulteriori libri, la mensola ha raggiunto la massima capienza.");
+                    }
+
+                }
+
+
+                //case 2 = visualizzazione di tutti i libri della mensola, nel caso non ci sia nessun libro non stampa nulla
+                case 2 -> {
+
+                    if (contaLibri > 0) {
+                        System.out.println("La mensola è composta da " + contaLibri + " libri che sono:");
+                        FrontEnd.visualizzaLibri(Mensola, contaLibri);
+                    } else {
+                        System.out.println("Non ci sono libri da visualizzare.");
+                    }
+
+                }
+
+
+                //case 3 = eliminazione di un libro della mensola data autore e titolo
+                case 3 -> {
+
+                    if(contaLibri > 0) {
+                        System.out.println("Inserisci i dati del libro da eliminare");
+                        Mensola = FrontEnd.rimuoviLibro(Mensola, contaLibri, tastiera);
+                        contaLibri--;
+                    } else {
+                        System.out.println("Non ci sono libri da rimuovere.");
+                    }
+
+                }
+
+
+                //case 4 = eliminazione di uno o più libri della mensola dato il titolo
+                case 4 -> {
+
+                    if(contaLibri > 0) {
+
+                        Libro LibriDaRimuovere = new Libro();
+
+                        System.out.println("Inserisci il titolo dei libri da eliminare");
+                        LibriDaRimuovere.titolo = tastiera.nextLine();
+
+                        int temp;
+
+                        temp = FrontEnd.contaLibriRemove(Mensola, contaLibri, tastiera, LibriDaRimuovere);
+
+                        Mensola = FrontEnd.rimuoviLibri(Mensola, contaLibri, tastiera, LibriDaRimuovere);
+
+                        contaLibri = contaLibri - temp;
+
+                    } else {
+                        System.out.println("Non ci sono libri da rimuovere.");
+                    }
+
+                }
+
+
+                //case 5 = ricerca di un libro della mensola dato autore e titolo
+                case 5 -> {
+
+                    if(contaLibri > 0) {
+
+                        int j;
+
+                        Libro libroDaCercare = new Libro();
+
+                        System.out.println("Inserisci l'autore del libro che vuoi cercare");
+                        libroDaCercare.autore = tastiera.nextLine();
+
+                        System.out.println("Inserisci il titolo del libro che vuoi cercare");
+                        libroDaCercare.titolo = tastiera.nextLine();
+
+                        j = FrontEnd.findIndex(Mensola, contaLibri, tastiera, libroDaCercare);
+
+                        if(j < 0) {
+                            System.out.println("Il libro ricercato non è presente nella mensola.");
+                        } else {
+                            System.out.println("Il libro ricercato è presente nella mensola.");
+                            System.out.println(Mensola[j].formattaDati());
+                        }
+
+                    } else {
+                        System.out.println("Non ci sono libri da ricercare.");
+                    }
+                }
+
+
+                //case 6 = ricerca di uno o più libri della mensola dato il titolo
+                case 6 -> {
+
+                    if(contaLibri > 0) {
+
+                        int j;
+
+                        Libro libroDaCercare2 = new Libro();
+
+                        System.out.println("Inserisci il titolo");
+                        libroDaCercare2.titolo = tastiera.nextLine();
+
+                        j = FrontEnd.findIndexAll(Mensola, contaLibri, tastiera, libroDaCercare2);
+
+                        if(j == 0) {
+                            System.out.println("Non c'è nessun libro con questo titolo");
+                        }
+
+                    } else {
+                        System.out.println("Non ci sono libri da ricercare.");
+                    }
+
+                }
+
+
+                //case 7 = modifica della data di un libro della mensola data l'autore e il titolo
+                case 7 -> {
+
+                    if(contaLibri > 0) {
+                        System.out.println("Inserisci i dati del libro che vuoi modificare");
+                        Mensola = FrontEnd.modificaLibro(Mensola, contaLibri, tastiera);
+                    } else {
+                        System.out.println("Non ci sono libri da modificare.");
+                    }
+
+                }
+
+
+                //case 8 = uscita dal ciclo do-while -> uscita dal programma
+                case 8 -> uscita = false;
+
+            }
+
+
+            //finché uscita non è false il ciclo si ripete
+        } while (uscita);
+
+        System.out.println("Fine programma");
+
+    }
+}

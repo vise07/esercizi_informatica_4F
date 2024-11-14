@@ -1,1 +1,220 @@
-g
+import static utility.Tools.*;
+import lunaPark.Persona;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        final int MAXPERSONE = 5;
+        ArrayList<Persona> LunaPark = new ArrayList<>(MAXPERSONE);
+        boolean uscita = true;
+        int contOrario = 0;
+
+        String[] opzioni = {"MENU", "ENTRATA", "USCITA", "NUOVA GIOSTRA", "VISUALIZZAZIONE BIGLIETTO", "VISUALIZZAZIONE GIOSTRE", "FINE"};
+
+        try {
+
+            do {
+
+                switch (Menu(opzioni, sc)) {
+
+                    case 1 -> {
+
+                        try {
+
+                            if (LunaPark.size() < MAXPERSONE) {
+
+                                Persona personaEntrata = new Persona();
+
+                                System.out.println("Inserisci il numero del biglietto della persona entrata al luna park:");
+                                personaEntrata.numeroBiglietto = Integer.parseInt(sc.nextLine());
+
+                                if (controlloDoppioni(LunaPark, personaEntrata) == -1) {
+
+                                    LunaPark.add(personaEntrata);
+
+                                } else {
+                                    System.out.println("Il biglietto è già presente nel luna park.");
+                                }
+
+                            } else {
+                                System.out.println("Il luna park è pieno, non si possono far entrare nuove persone.");
+                            }
+
+                        } catch (Exception e) {
+                            System.out.println("L'entrata della persona non ha avuto successo.");
+                            System.out.println(e.getMessage());
+                        }
+
+                    }
+
+                    case 2 -> {
+
+                        try {
+
+                            if (!LunaPark.isEmpty()) {
+
+                                Persona personaUscita = new Persona();
+
+                                System.out.println("Inserisci il numero del biglietto della persona che è uscita dal luna park:");
+                                personaUscita.numeroBiglietto = Integer.parseInt(sc.nextLine());
+
+                                uscitaPersona(LunaPark, personaUscita);
+
+                            } else {
+                                System.out.println("La concessionaria è vuota, non ci sono auto da visualizzare.");
+                            }
+
+                        } catch(Exception e) {
+                            System.out.println("L'uscita della persona non ha avuto successo.");
+                            System.out.println(e.getMessage());
+                        }
+
+                    }
+
+                    case 3 -> {
+
+                        try {
+
+                            if (!LunaPark.isEmpty()) {
+
+                                Persona nuovaGiostra = new Persona();
+
+                                System.out.println("Inserisci il numero del biglietto della persona che fa una nuova giostra:");
+                                nuovaGiostra.numeroBiglietto = Integer.parseInt(sc.nextLine());
+
+                                int test = controlloDoppioni(LunaPark, nuovaGiostra);
+
+                                if (test == -1) {
+
+                                    System.out.println("Il numero del biglietto inserito non è presente nel luna park.");
+
+                                } else {
+
+                                    System.out.println("Il numero del biglietto inserito è presente nel luna park.");
+
+                                    if(contOrario == 0) {
+
+                                        LunaPark.get(test).orarioInizio = LocalDateTime.now();
+
+                                        contOrario++;
+
+                                    }
+
+                                    System.out.println("Inserisci la giostra che fa la persona:");
+
+                                    String[] giostre = {"MENU", "RUOTA PANORAMICA", "AUTOSCONTRI", "OTTOVOLANTE", "TAGADA'"};
+
+                                    switch (Menu(giostre, sc)) {
+
+                                        case 1 -> LunaPark.get(test).contaRuotaPanoramica += 1;
+                                        case 2 -> LunaPark.get(test).contaAutoscontri += 1;
+                                        case 3 -> LunaPark.get(test).contaOttovolante += 1;
+                                        case 4 -> LunaPark.get(test).contaTagada += 1;
+
+                                    }
+
+                                    LunaPark.get(test).numeroGiostreProvate++;
+
+                                }
+
+                            } else {
+                                System.out.println("Il luna park è vuoto, nessuno può fare una giostra.");
+                            }
+
+                        } catch(Exception e) {
+
+                            System.out.println("L'inserimento della nuova giostra che ha fatto la persona non ha avuto successo.");
+                            System.out.println(e.getMessage());
+
+                        }
+
+                    }
+
+                    case 4 -> {
+
+                        if (!LunaPark.isEmpty()) {
+
+                            System.out.println("Il numero di persone che ci sono nel luna park è " + LunaPark.size() + " e sono:");
+                            LunaPark.forEach(P -> System.out.println(P.numBiglietto()));
+
+                        } else {
+                            System.out.println("Il luna park è vuoto, non ci sono persone da visualizzare.");
+                        }
+
+                    }
+
+                    case 5 -> {
+
+                        if (!LunaPark.isEmpty()) {
+
+                            Persona visualizzazioneBiglietto = new Persona();
+
+                            System.out.println("Inserisci il numero del biglietto della persona che vuoi visualizzare:");
+                            visualizzazioneBiglietto.numeroBiglietto = Integer.parseInt(sc.nextLine());
+
+                            int test = controlloDoppioni(LunaPark, visualizzazioneBiglietto);
+
+                            if (test == -1) {
+
+                                System.out.println("Il numero del biglietto inserito non è presente nel luna park.");
+
+                            } else {
+
+                                System.out.println("Il numero del biglietto inserito è presente nel luna park, ecco le sue informazioni:");
+                                System.out.println(LunaPark.get(test).giostreProvate());
+
+                            }
+
+                        } else {
+                            System.out.println("Il luna park è vuoto, non ci sono biglietti da visualizzare.");
+                        }
+
+                    }
+
+                    case 6 -> uscita = false;
+
+                }
+
+            } while (uscita);
+
+        } catch (Exception e) {
+            System.out.println("La scelta inserita è errata.");
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Fine programma.");
+    }
+
+
+    
+    
+    
+    public static int controlloDoppioni(ArrayList<Persona> LunaPark, Persona personaEntrata) {
+
+        for (int i = 0; i < LunaPark.size(); i++) {
+
+            if (LunaPark.get(i).numeroBiglietto == personaEntrata.numeroBiglietto) {
+                return i;
+            }
+
+        }
+
+        return -1;
+    }
+
+
+    public static void uscitaPersona(ArrayList<Persona> LunaPark, Persona personaUscita) {
+
+        for (int i = 0; i < LunaPark.size(); i++) {
+
+            if (LunaPark.get(i).numeroBiglietto == personaUscita.numeroBiglietto) {
+                LunaPark.remove(i);
+            }
+
+        }
+    }
+}

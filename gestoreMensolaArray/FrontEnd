@@ -1,0 +1,245 @@
+
+package frontScreen;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+import static utility.Tools.*;
+import mensola.*;
+
+
+//classe FrontEnd che contiene più metodi e fa parte del package frontScreen
+public class FrontEnd {
+
+    
+    //METODO PER LEGGERE UN LIBRO
+    public static Libro leggiLibro(Scanner keyboard, boolean scelta) {
+        
+        //opzioni da dare al menu che si trova nella classe Tools
+        String[] opzioni = {"SCEGLI TIPO", "ROMANZO", "MANUALE", "THRILLER"};
+
+        //creazione di un nuovo libro (variabile di tipo 'Libro' -> classe Libro = variabili Libro)
+        Libro l = new Libro();
+
+        //inserimento dati del libro con variabili presenti nella classe Libro
+        System.out.println("Inserisci l'autore");
+        l.autore = keyboard.nextLine();
+        System.out.println("Inserisci il titolo");
+        l.titolo = keyboard.nextLine();
+
+        //scelta = boolean per inserire solo autore e titolo che servono solo questi 2 dati per alcuni dati o la lettura intera del libro
+        //(scelta è inizializzata a true o false all'inizio dei metodi che necessitano questo metodo in base alla loro funzione)
+        if(scelta) {
+            System.out.println("Inserisci le pagine");
+            l.pagine = (Integer.parseInt(keyboard.nextLine()));
+            System.out.println("Inserisci il tipo");
+
+            //switch-case per inserire il tipo di libro
+            switch (Menu(opzioni, keyboard)) {
+                case 1 -> l.tipo = Genere.ROMANZO;
+                case 2 -> l.tipo = Genere.MANUALE;
+                case 3 -> l.tipo = Genere.THRILLER;
+            }
+
+            //inserimento della data con il formato scelto
+            System.out.println("Inserisci la data di pubblicazione in gg-mm-aaaa");
+            l.dataDiPubblicazione = LocalDate.parse(keyboard.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        }
+
+        //ritrono del libro
+        return l;
+    }
+
+
+
+
+
+    //METODO CASE 1 -> INSERIMENTO
+    //metodo che invoca un altro metodo che si trova nella classe FrontEnd che serve a inserire tutti i dati di un nuovo libro
+    public static Libro inserisciLibro(Scanner sc, int contaLibri, Libro[] Mensola, double costoTotale) {
+
+        boolean scelta = true;
+
+        Mensola[contaLibri] = FrontEnd.leggiLibro(sc, scelta);
+
+        return Mensola[contaLibri];
+    }
+
+    //METODO CASE 1 -> CONTROLLO X INSERIMENTO
+    //metodo che confronta autore e titolo fra tutti i libri
+    public static boolean ricercaLibro(Libro[] gestore, int contaLibri, Libro newLibro) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            if (gestore[i].autore.equalsIgnoreCase(newLibro.autore) && gestore[i].titolo.equalsIgnoreCase(newLibro.titolo)) {
+                //il libro è un doppione
+                return true;
+            }
+
+        }
+        //il libro non è un doppione
+        return false;
+    }
+
+
+
+
+
+    //METODO CASE 2 -> VISUALIZZAZIONE
+    //metodo che visualizza tutti i libri inseriti nella mensola
+    public static void visualizzaLibri(Libro[] Mensola, int contaLibri) {
+
+        for (int i = 0; i < contaLibri; i++) {
+
+            //stampa un libro con il metodo formattaDati della classe Libro
+            System.out.println(Mensola[i].formattaDati());
+
+        }
+    }
+
+
+
+
+
+    //METODO CASE 3 -> ELIMINAZIONE SINGOLA
+    //metodo per rimuovere un libro dalla mensola avendo inserito il titolo e l'autore del libro
+    public static Libro[] rimuoviLibro(Libro[] gestore, int contaLibri, Scanner sc) {
+
+        Libro[] newGestore = new Libro[gestore.length];
+        boolean scelta = false;
+        Libro libroDaEliminare = new Libro();
+        int cont = 0;
+
+        libroDaEliminare = FrontEnd.leggiLibro(sc, scelta);
+
+        for(int i = 0; i < contaLibri; i++) {
+            if (!gestore[i].autore.equalsIgnoreCase(libroDaEliminare.autore) && !gestore[i].titolo.equalsIgnoreCase(libroDaEliminare.titolo)) {
+                newGestore[cont++] = gestore[i];
+            }
+        }
+
+        return newGestore;
+    }
+
+
+
+
+    //METODO CASE 4 -> ELIMINAZIONE X TITOLO
+    //metodo per rimuovere uno o più libri dalla mensola avendo inserito solo il titolo
+    public static Libro[] rimuoviLibri(Libro[] gestore, int contaLibri, Scanner sc, Libro libriRemove) {
+
+        Libro[] newGestore = new Libro[gestore.length];
+        int cont = 0;
+
+        for(int i = 0; i < contaLibri; i++) {
+            if (!gestore[i].titolo.equalsIgnoreCase(libriRemove.titolo)) {
+                newGestore[cont++] = gestore[i];
+            }
+        }
+
+        return newGestore;
+    }
+
+    //METODO CASE 4 -> ELIMINAZIONE X TITOLO
+    //metodo che conta il numero di libri da eliminare della mensola
+    public static int contaLibriRemove(Libro[] gestore, int contaLibri, Scanner sc, Libro libriRemove) {
+
+        int contLibri = 0;
+
+        for(int i = 0; i < contaLibri; i++) {
+            if (gestore[i].titolo.equalsIgnoreCase(libriRemove.titolo)) {
+                contLibri++;
+            }
+        }
+
+        return contLibri;
+    }
+
+
+
+    /*
+    //metodo che ricerca un libro nella mensola inserendo titolo e autore
+    public static void cercaLibro(Libro[] gestore, int contaLibri, Scanner sc) {
+
+        Libro libroDaCercare = new Libro();
+        boolean scelta = false;
+
+        libroDaCercare = FrontEnd.leggiLibro(sc, scelta);
+
+        for(int i = 0; i < contaLibri; i++) {
+
+            if(gestore[i].autore.equalsIgnoreCase(libroDaCercare.autore) && gestore[i].titolo.equalsIgnoreCase(libroDaCercare.titolo)) {
+
+                //visualizzazione del libro cercato
+                System.out.println("Il libro è presente nella mensola e le sue informazioni sono:");
+                System.out.println(gestore[i].formattaDati());
+            }
+        }
+    }
+    */
+
+
+
+    //METODO CASE 5 -> RICERCA SINGOLA
+    //metodo che ricerca un libro nella mensola inserendo solo il titolo
+    public static int findIndex(Libro[] gestore, int contaLibri, Scanner sc, Libro libroDaCercare) {
+
+        for(int i = 0; i < contaLibri; i++) {
+
+            if(gestore[i].autore.equalsIgnoreCase(libroDaCercare.autore) && gestore[i].titolo.equalsIgnoreCase(libroDaCercare.titolo)) {
+                return i;
+            }
+
+        }
+        return -1;
+    }
+
+
+
+
+
+    //METODO CASE 6 -> RICERCA X TITOLO
+    //metodo che ricerca uno o più libri nella mensola inserendo solo il titolo
+    public static int findIndexAll(Libro[] gestore, int contaLibri, Scanner sc, Libro libroDaCercare2) {
+
+        System.out.println("I libri con questo titolo sono:");
+
+        int cont = 0;
+        for(int i = 0; i < contaLibri; i++) {
+
+            if(gestore[i].titolo.equalsIgnoreCase(libroDaCercare2.titolo)) {
+                cont++;
+                System.out.println(gestore[i].formattaDati());
+            }
+
+        }
+
+        return cont;
+    }
+
+
+
+
+
+    //METODO CASE 7 -> MODIFICA DATA
+    //metodo che mofica la data di un libro inserendo prima autore e titolo
+    public static Libro[] modificaLibro(Libro[] gestore, int contaLibri, Scanner sc) {
+
+        Libro libroDaModificare = new Libro();
+        boolean scelta = false;
+
+        libroDaModificare = FrontEnd.leggiLibro(sc, scelta);
+
+        for(int i = 0; i < contaLibri; i++) {
+
+            if(gestore[i].autore.equalsIgnoreCase(libroDaModificare.autore) && gestore[i].titolo.equalsIgnoreCase(libroDaModificare.titolo)) {
+
+                //Inserimento della nuova data di pubblicazione del libro
+                System.out.println("Inserisci la nuova data di pubblicazione in gg-mm-aaaa");
+                gestore[i].dataDiPubblicazione = LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            }
+        }
+        return gestore;
+    }
+}

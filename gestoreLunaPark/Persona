@@ -1,0 +1,22 @@
+package lunaPark;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Persona {
+    public int numeroBiglietto;
+    public int numeroGiostreProvate = 0;
+    public int contaRuotaPanoramica = 0;
+    public int contaAutoscontri = 0;
+    public int contaOttovolante = 0;
+    public int contaTagada = 0;
+    public LocalDateTime orarioInizio = LocalDateTime.now();
+    private DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
+
+    public String giostreProvate() {
+        return String.format("Numero biglietto: %d - Giostre totali: %d - Ruota panoramica: %d - Autoscontri: %d - Ottovolante: %d - Tagadà: %d - Data inizio giostre: %s", numeroBiglietto, numeroGiostreProvate, contaRuotaPanoramica, contaAutoscontri, contaOttovolante, contaTagada, orarioInizio.format(dataFormat));
+    }
+
+    public String numBiglietto() {
+        return String.format("Numero biglietto: %d - Numero giostre totali: %d", numeroBiglietto, numeroGiostreProvate);
+    }
+}

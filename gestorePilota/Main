@@ -1,1 +1,136 @@
-main
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayList<Pilota> piloti = new ArrayList<>();
+        ArrayList<Auto> automobili = new ArrayList<>();
+        boolean uscita = false;
+
+        String[] Opzioni = {"Menu", "Inserimento Pilota", "Inserimento Auto", "Visualizza Piloti", "Visualizza Auto", "Esci"};
+
+        try {
+
+            do {
+
+                switch (Tools.Menu(Opzioni, scanner)) {
+
+                    case 1 -> {
+
+                        try {
+
+                            Pilota nuovoPilota = inserisciPilota(scanner, piloti);
+                            piloti.add(nuovoPilota);
+
+                            System.out.println("Pilota aggiunto.");
+
+                        } catch (Exception e) {
+                            System.out.println("Errore, pilota non aggiunto.");
+                            System.out.println(e.getMessage());
+                        }
+                    }
+
+                    case 2 -> {
+
+                        try {
+
+                            Auto nuovaAuto = inserisciAuto(scanner, piloti, automobili);
+                            automobili.add(nuovaAuto);
+
+                            System.out.println("Auto aggiunta.");
+                        } catch (Exception e) {
+                            System.out.println("Errore inserimento.");
+                            System.out.println(e.getMessage());
+                        }
+                    }
+
+                    case 3 -> {
+
+                        System.out.println("Piloti presenti:");
+
+                        if (piloti.isEmpty()) {
+                            System.out.println("Nessun pilota disponibile.");
+                        } else {
+
+                            for (Pilota p : piloti) {
+                                System.out.println(p);
+                            }
+
+                        }
+                    }
+
+                    case 4 -> {
+
+                        System.out.println("Automobili presenti:");
+
+                        if (automobili.isEmpty()) {
+                            System.out.println("Nessuna automobile disponibile.");
+                        } else {
+
+                            for (Auto a : automobili) {
+                                System.out.println(a);
+                            }
+
+                        }
+                    }
+
+                    case 5 -> uscita = true;
+
+                }
+            } while (uscita);
+
+            System.out.println("Fine programma.");
+
+        } catch(Exception e) {
+            System.out.println("Errore.");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Pilota inserisciPilota(Scanner scanner, ArrayList<Pilota> piloti) {
+
+        System.out.println("Inserisci il nome:");
+        String nome = scanner.nextLine();
+        System.out.println("Inserisci il cognome:");
+        String cognome = scanner.nextLine();
+        System.out.println("Inserisci la nazionalità:");
+        String nazionalita = scanner.nextLine();
+        System.out.println("Inserisci l'età:");
+        int eta = Integer.parseInt(scanner.nextLine());
+
+        Pilota newPilota = new Pilota(nome, cognome, nazionalita, eta);
+
+        return newPilota;
+    }
+
+    public static Auto inserisciAuto(Scanner scanner, ArrayList<Pilota> piloti, ArrayList<Auto> automobili) {
+
+        if (piloti.isEmpty()) {
+            System.out.println("Non ci sono piloti disponibili. Inserire prima un pilota.");
+        }
+
+        System.out.println("Inserisci la scuderia:");
+        String scuderia = scanner.nextLine();
+        System.out.println("Inserisci la cilindrata:");
+        double cilindrata = Double.parseDouble(scanner.nextLine());
+
+        System.out.println("Scegli un pilota (numero):");
+        for (int i = 0; i < piloti.size(); i++) {
+            System.out.println((i + 1) + ". " + piloti.get(i));
+        }
+
+        int indicePilota = Integer.parseInt(scanner.nextLine()) - 1;
+
+        if (indicePilota < 0 || indicePilota >= piloti.size()) {
+            System.out.println("Indice pilota non valido.");
+        }
+
+        Pilota pilotaScelto = piloti.get(indicePilota);
+
+        Auto newAuto = new Auto(scuderia, pilotaScelto, cilindrata);
+
+        return newAuto;
+    }
+}

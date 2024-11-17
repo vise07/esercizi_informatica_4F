@@ -1,136 +1,129 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import static Tools.Utility.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner tastiera = new Scanner(System.in);
 
-        ArrayList<Pilota> piloti = new ArrayList<>();
-        ArrayList<Auto> automobili = new ArrayList<>();
-        boolean uscita = false;
+        ArrayList<Auto> corsa = new ArrayList<>();
+        final int MAXAUTO = 10;
+        boolean fine = false;
+        int nAuto = 0;
 
-        String[] Opzioni = {"Menu", "Inserimento Pilota", "Inserimento Auto", "Visualizza Piloti", "Visualizza Auto", "Esci"};
+        String[] opzioni = {"GARA", "Inserisci Auto", "Visualizza Auto", "Rimuovi Auto", "Inizia Gara", "Esci"};
 
         try {
 
             do {
 
-                switch (Tools.Menu(Opzioni, scanner)) {
+                switch (Menu(opzioni, tastiera)) {
 
                     case 1 -> {
-
-                        try {
-
-                            Pilota nuovoPilota = inserisciPilota(scanner, piloti);
-                            piloti.add(nuovoPilota);
-
-                            System.out.println("Pilota aggiunto.");
-
-                        } catch (Exception e) {
-                            System.out.println("Errore, pilota non aggiunto.");
-                            System.out.println(e.getMessage());
+                        System.out.println("Inserimento Auto");
+                        if (nAuto <= MAXAUTO) {
+                            try {
+                                Pilota pilota = aggiuntaPilota(tastiera);
+                                if (cercaPilota(corsa, pilota) != -1) {
+                                    System.out.println("Questo pilota è già in gara!");
+                                } else {
+                                    corsa.add(aggiuntaAuto(tastiera, pilota));
+                                    nAuto++;
+                                    System.out.println("Hai inserito la seguente auto: ");
+                                    System.out.println(corsa.getLast().toString());
+                                }
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } else {
+                            System.out.println("Sono già presenti tutte le auto della gara (max 10)");
                         }
                     }
 
                     case 2 -> {
-
-                        try {
-
-                            Auto nuovaAuto = inserisciAuto(scanner, piloti, automobili);
-                            automobili.add(nuovaAuto);
-
-                            System.out.println("Auto aggiunta.");
-                        } catch (Exception e) {
-                            System.out.println("Errore inserimento.");
-                            System.out.println(e.getMessage());
+                        System.out.println("Visualizzazione Auto");
+                        for (int i = 0; i < corsa.size(); i++) {
+                            System.out.println(corsa.get(i).toString());
                         }
                     }
 
                     case 3 -> {
-
-                        System.out.println("Piloti presenti:");
-
-                        if (piloti.isEmpty()) {
-                            System.out.println("Nessun pilota disponibile.");
-                        } else {
-
-                            for (Pilota p : piloti) {
-                                System.out.println(p);
+                        try {
+                            System.out.println("Rimozione Auto");
+                            Pilota pilota = aggiuntaPilota(tastiera);
+                            if (cercaPilota(corsa, pilota) != -1) {
+                                corsa.remove(cercaPilota(corsa, pilota));
+                                nAuto--;
+                            } else {
+                                System.out.println("Pilota e corrispondente auto da rimuovere non trovati");
                             }
-
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                         }
                     }
 
                     case 4 -> {
-
-                        System.out.println("Automobili presenti:");
-
-                        if (automobili.isEmpty()) {
-                            System.out.println("Nessuna automobile disponibile.");
-                        } else {
-
-                            for (Auto a : automobili) {
-                                System.out.println(a);
-                            }
-
+                        System.out.println("INIZIO GARA");
+                        System.out.println("Inserisci nome gara: ");
+                        String nomeGara = tastiera.nextLine();
+                        System.out.println("Auto gareggianti: ");
+                        for (int i = 0; i < corsa.size(); i++) {
+                            System.out.println(corsa.get(i).toString());
                         }
+                        Gara gara = new Gara(nomeGara, corsa);
+                        System.out.println("Vincitore: " + gara.getRisultato().toString());
+                        System.out.println("Fine gara");
                     }
 
-                    case 5 -> uscita = true;
-
+                    case 5 -> {
+                        System.out.println("Uscita programma");
+                        fine = true;
+                    }
                 }
-            } while (uscita);
 
-            System.out.println("Fine programma.");
+            } while (!fine);
 
         } catch(Exception e) {
-            System.out.println("Errore.");
             System.out.println(e.getMessage());
         }
+
+        System.out.println("Fine programma.");
     }
 
-    public static Pilota inserisciPilota(Scanner scanner, ArrayList<Pilota> piloti) {
+    public static int cercaPilota(ArrayList<Auto> corsa, Pilota pilota) {
 
-        System.out.println("Inserisci il nome:");
-        String nome = scanner.nextLine();
-        System.out.println("Inserisci il cognome:");
-        String cognome = scanner.nextLine();
-        System.out.println("Inserisci la nazionalità:");
-        String nazionalita = scanner.nextLine();
-        System.out.println("Inserisci l'età:");
-        int eta = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < corsa.size(); i++) {
+            if (pilota.getNome().equals(corsa.get(i).getPilota().getNome()) && pilota.getCognome().equals(corsa.get(i).getPilota().getCognome()) && pilota.getEta() == corsa.get(i).getPilota().getEta()) {
+                return i;
+            }
+        }
 
-        Pilota newPilota = new Pilota(nome, cognome, nazionalita, eta);
-
-        return newPilota;
+        return -1;
     }
 
-    public static Auto inserisciAuto(Scanner scanner, ArrayList<Pilota> piloti, ArrayList<Auto> automobili) {
+    public static Pilota aggiuntaPilota(Scanner tastiera) throws Exception {
 
-        if (piloti.isEmpty()) {
-            System.out.println("Non ci sono piloti disponibili. Inserire prima un pilota.");
-        }
+        System.out.println("Inserisci nome pilota: ");
+        String nomePilota = tastiera.nextLine();
+        System.out.println("Inserisci cognome pilota: ");
+        String cognomePilota = tastiera.nextLine();
+        System.out.println("Inserisci nazionalità pilota: ");
+        String nazionalitaPilota = tastiera.nextLine();
+        System.out.println("Inserisci età pilota: ");
+        int etaPilota = Integer.parseInt(tastiera.nextLine());
 
-        System.out.println("Inserisci la scuderia:");
-        String scuderia = scanner.nextLine();
-        System.out.println("Inserisci la cilindrata:");
-        double cilindrata = Double.parseDouble(scanner.nextLine());
+        Pilota pilota = new Pilota(nomePilota, cognomePilota, nazionalitaPilota, etaPilota);
 
-        System.out.println("Scegli un pilota (numero):");
-        for (int i = 0; i < piloti.size(); i++) {
-            System.out.println((i + 1) + ". " + piloti.get(i));
-        }
+        return pilota;
+    }
 
-        int indicePilota = Integer.parseInt(scanner.nextLine()) - 1;
+    public static Auto aggiuntaAuto(Scanner tastiera, Pilota pilota) throws Exception {
 
-        if (indicePilota < 0 || indicePilota >= piloti.size()) {
-            System.out.println("Indice pilota non valido.");
-        }
+        System.out.println("Inserisci scuderia (redbull,mercedes,ferrari): ");
+        Scuderie scuderia = Scuderie.valueOf(tastiera.nextLine().toUpperCase());
+        System.out.println("Inserisci cilindrata: ");
+        int cilindrata = Integer.parseInt(tastiera.nextLine());
 
-        Pilota pilotaScelto = piloti.get(indicePilota);
-
-        Auto newAuto = new Auto(scuderia, pilotaScelto, cilindrata);
-
-        return newAuto;
+        return new Auto(scuderia, pilota, cilindrata);
     }
 }

@@ -1,11 +1,16 @@
+package Tools;
+
 import java.util.Scanner;
 
-public class Tools {
+public class Utility {
     /*public static void main(String[] args) {
 
     }*/
-    private Tools()
-    {}; //impedisce di istanziare la classe
+    private Utility() {
+    }
+
+    ; //impedisce di istanziare la classe
+
     public static void clrScr() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -22,7 +27,7 @@ public class Tools {
         }
     }
 
-    public static int Menu(String[] opzioni, Scanner tastiera) {// parametri formali
+    public static int Menu(String opzioni[], Scanner tastiera) {// parametri formali
         int scelta;
 
         do {
@@ -34,15 +39,15 @@ public class Tools {
                 System.out.println("[" + i + "]" + " " + opzioni[i]);
             }
             scelta = (Integer.parseInt(tastiera.nextLine()));
-            //metodo che passa un numero da intero a stringa
             //tastiera.nextLine();
             if ((scelta < 1) || (scelta > opzioni.length - 1)) {
                 System.out.println("Opzione Sbagliata");
                 Wait(2000);
             }
-        } while ((scelta < 1) || (scelta > opzioni.length - 1));
-
+        }
+        while ((scelta < 1) || (scelta > opzioni.length - 1));
         //tastiera.nextLine();
         return scelta;
     }
+
 }

@@ -236,7 +236,7 @@ public class Main {
 
                             test = true;
 
-                            String[] Opzioni = {"MENU", "PRECEDENTE", "SUCCESSIVO", "ESCI"};
+                            String[] Opzioni = {"MENU", "VISUALIZZA PRECEDENTE", "VISUALIZZA SUCCESSIVO", "ESCI"};
 
                             System.out.println("Il libro con l'indice inserito è:");
                             System.out.println(mensola.get(indicePartenza).formattaDati());

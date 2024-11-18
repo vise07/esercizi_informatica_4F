@@ -10,7 +10,7 @@ public class Main {
 
 
         //dichiarazione variabili
-        final int MAXLIBRI = 3;
+        final int MAXLIBRI = 5;
         ArrayList <Libro> mensola = new ArrayList<>(MAXLIBRI);
         int contaLibri = 0;
         double costoTotale = 0.0;
@@ -18,7 +18,7 @@ public class Main {
 
 
         //opzioni da dare al menu che si trova nella classe Tools
-        String[] opzioni = {"MENU", "INSERIMENTO", "VISUALIZZAZIONE", "RICERCA X AUTORE E TITOLO", "RICERCA X TITOLO", "ELIMINAZIONE X AUTORE E TITOLO", "ELIMINAZIONE X TITOLO", "MODIFICA DATA", "FINE"};
+        String[] opzioni = {"MENU", "INSERIMENTO", "VISUALIZZAZIONE", "RICERCA X AUTORE E TITOLO", "RICERCA X TITOLO", "ELIMINAZIONE X AUTORE E TITOLO", "ELIMINAZIONE X TITOLO", "MODIFICA DATA", "SCORRI MENSOLA", "FINE"};
 
 
         //ciclo do-while per far visualizzare il menu finché l'uscita non è false
@@ -212,8 +212,82 @@ public class Main {
 
                 }
 
+                case 8 -> {
+
+                    try {
+
+                        if(!mensola.isEmpty()) {
+
+                            int indicePartenza;
+                            boolean test = true;
+
+                            do {
+
+                                System.out.println("Inserisci l'indice di partenza per scorrere la mensola:");
+                                indicePartenza = Integer.parseInt(tastiera.nextLine());
+
+                                if (indicePartenza >= 0 && indicePartenza <= mensola.size()) {
+                                    test = false;
+                                } else {
+                                    System.out.println("L'indice di partenza non va bene, reinseriscilo.");
+                                }
+
+                            } while(test);
+
+                            test = true;
+
+                            String[] Opzioni = {"MENU", "PRECEDENTE", "SUCCESSIVO", "ESCI"};
+
+                            System.out.println("Il libro con l'indice inserito è:");
+                            System.out.println(mensola.get(indicePartenza).formattaDati());
+
+                            do{
+
+                                switch (Menu(Opzioni, tastiera)) {
+
+                                    case 1 -> {
+
+                                        if(indicePartenza > 0) {
+
+                                            indicePartenza--;
+                                            System.out.println(mensola.get(indicePartenza).formattaDati());
+
+                                        } else {
+                                            System.out.println("Non ci sono libri precedenti nella mensola.");
+                                        }
+
+                                    }
+
+                                    case 2 -> {
+
+                                        if(indicePartenza < mensola.size() - 1) {
+
+                                            indicePartenza++;
+                                            System.out.println(mensola.get(indicePartenza).formattaDati());
+
+                                        } else {
+                                            System.out.println("Non ci sono libri successivi nella mensola.");
+                                        }
+                                    }
+
+                                    case 3 -> test = false;
+
+                                }
+
+                            } while(test);
+
+                        } else {
+                            System.out.println("La mensola è vuota, non si può scorrere.");
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+
                 //case 8 = uscita dal ciclo do-while -> uscita dal programma
-                case 8 -> uscita = false;
+                case 9 -> uscita = false;
 
             }
 

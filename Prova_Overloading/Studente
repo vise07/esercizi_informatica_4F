@@ -4,6 +4,20 @@ public class Studente {
     private double media;
     private int matricola;
 
+
+    // Costruttore 1
+    public Studente(String nome) {
+        this.nome = nome;
+    }
+
+    // Costruttore 2
+    public Studente(String nome, String cognome) {
+        this.nome = nome;
+        this.cognome = cognome;
+    }
+
+
+    // Metodi getter e setter nome, cognome, media, matricola
     public String getNome() {
         return nome;
     }
@@ -35,6 +49,4 @@ public class Studente {
     public void setMatricola(int matricola) {
         this.matricola = matricola;
     }
-
-
 }

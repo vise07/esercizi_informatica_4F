@@ -1,5 +1,18 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Scanner sc = new Scanner(System.in);
+        
+        // Costruttore di default = inizializza le variabili
+        // Studente studente1 = new Studente();
+        
+        // Costruttore 1
+        Studente Studente1 = new Studente("Pippo");
+        System.out.println(Studente1.getNome());
+        
+        //Costruttore 2
+        Studente Studente2 = new Studente("Pippo", "Marchettos");
+        System.out.println(Studente2.getNome() + " " + Studente2.getCognome());
     }
 }

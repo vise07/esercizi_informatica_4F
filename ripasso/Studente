@@ -1,0 +1,61 @@
+public class Studente {
+    private String nome;
+    private String cognome;
+    private double media;
+    private double eta;
+
+    // Eccezioni sia sulla parte finale della firma del metodo sia l'eccezione dentro il metodo
+    public Studente(String nome, String cognome, double media, double eta) throws Exception {
+        if(eta < 14) {
+            throw new Exception("L'età non può essere minore di 14 anni.");
+        }
+        this.nome = nome;
+        this.cognome = cognome;
+        this.media = media;
+        this.eta = eta;
+    }
+
+    public Studente(String nome, String cognome, double eta) throws Exception {
+        this(nome, cognome, 0, eta);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public double getMedia() {
+        return media;
+    }
+
+    public void setMedia(double media) {
+        this.media = media;
+    }
+
+    public double getEta() throws Exception {
+        if(eta < 14) {
+            throw new Exception("L'eta non può essere minore di 14 anni.");
+        }
+        return eta;
+    }
+
+    public void setEta(double eta) {
+        this.eta = eta;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Studente -> nome: %s - cognome: %s - media: %f - eta: %f", nome, cognome, media, eta);
+    }
+}

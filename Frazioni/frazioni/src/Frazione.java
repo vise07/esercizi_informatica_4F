@@ -1,14 +1,32 @@
 public class Frazione {
+
+    // Attributi
     private int numeratore;
     private int denominatore;
 
 
-    // Costruttore per creare una frazione con i numeri
+    // Costruttore della frazione
     public Frazione(int numeratore, int denominatore) {
+        setDenominatore(denominatore);
+        setNumeratore(numeratore);
+    }
+
+
+    // Getter e Setter del numeratore e denominatore
+    public int getNumeratore() {
+        return numeratore;
+    }
+    public void setNumeratore(int numeratore) {
+        this.numeratore = numeratore;
+    }
+
+    public int getDenominatore() {
+        return denominatore;
+    }
+    public void setDenominatore(int denominatore) {
         if (denominatore == 0) {
             throw new IllegalArgumentException("Il denominatore non può essere zero");
         }
-        this.numeratore = numeratore;
         this.denominatore = denominatore;
     }
 
@@ -22,9 +40,8 @@ public class Frazione {
 
 
     // Metodo per sommare due frazioni e ritornare il risultato in formato decimale
-    public double sommaFrazioniDecimal(Frazione f2) {
-        return (double) (this.numeratore * f2.denominatore + f2.numeratore * this.denominatore) /
-                (this.denominatore * f2.denominatore);
+    public double sommaFrazioniInDecimale(Frazione f2) {
+        return (double) (this.numeratore * f2.denominatore + f2.numeratore * this.denominatore) / (this.denominatore * f2.denominatore);
     }
 
 

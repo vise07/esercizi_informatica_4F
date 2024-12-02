@@ -1,0 +1,62 @@
+public class Cronometro {
+
+    private long secondi;        // Contatore dei secondi
+    private boolean inPausa;     // Flag per controllare se il cronometro è in pausa
+    private boolean inEsecuzione; // Flag per sapere se il cronometro è in esecuzione
+    private Thread cronometroThread; // Thread per gestire il conteggio dei secondi
+
+    // Costruttore per inizializzare il cronometro
+    public Cronometro() {
+        reset();  // Inizializza il cronometro
+    }
+
+    // Metodo per avviare il cronometro
+    public void avvia() {
+        if (!inEsecuzione) {
+            inEsecuzione = true;
+            cronometroThread = new Thread(() -> {
+                while (inEsecuzione) {
+                    try {
+                        // Incrementiamo il contatore ogni secondo
+                        Thread.sleep(1000); // Pausa di 1 secondo
+                        if (!inPausa) {
+                            secondi++; // Aumentiamo i secondi se non siamo in pausa
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            cronometroThread.start(); // Avvia il thread
+        }
+    }
+
+    // Metodo per mettere in pausa il cronometro
+    public void pausa() {
+        inPausa = true; // Mettiamo in pausa il cronometro
+    }
+
+    // Metodo per riprendere il cronometro
+    public void riprendi() {
+        inPausa = false; // Riprendiamo il cronometro dalla pausa
+    }
+
+    // Metodo per resettare il cronometro
+    public void reset() {
+        secondi = 0;        // Resettiamo il contatore dei secondi
+        inPausa = false;    // Resettiamo lo stato di pausa
+        inEsecuzione = false; // Lo stato di esecuzione è falso finché non avviamo il cronometro
+        if (cronometroThread != null) {
+            cronometroThread.interrupt();  // Interrompiamo il thread esistente
+        }
+    }
+
+    // Metodo per ottenere la durata in formato HH:mm:ss
+    public String getDurata() {
+        long ore = secondi / 3600;            // Calcoliamo le ore
+        long minuti = (secondi % 3600) / 60;  // Calcoliamo i minuti
+        long secondiRestanti = secondi % 60;  // Calcoliamo i secondi
+
+        return String.format("%02d:%02d:%02d", ore, minuti, secondiRestanti);  // Restituiamo in formato HH:mm:ss
+    }
+}

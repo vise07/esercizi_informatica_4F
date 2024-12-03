@@ -1,0 +1,51 @@
+public class Pilota {
+
+    // Attributi Pilota
+    private String nome;
+    private String cognome;
+
+
+    // Costtruttore Pilota
+    public Pilota(String nome, String cognome) {
+        this.nome = nome;
+        this.cognome = cognome;
+    }
+
+
+    // Metodi Getter e Setter nome e cognome
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome)throws Exception {
+        if(nome == "") {
+            throw new Exception("Errore nome");
+        }
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome)throws Exception {
+        if(cognome == "") {
+            throw new Exception("Errore cognome");
+        }
+        this.cognome = cognome;
+    }
+
+
+    // Metodo equals
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+
+    // Metodo toString per visualizzare le infrormazioni del pilota
+    @Override
+    public String toString() {
+        return "Pilota -> nome: " + nome + " - cognome: " + cognome;
+    }
+}

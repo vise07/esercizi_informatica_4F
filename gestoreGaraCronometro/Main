@@ -1,0 +1,103 @@
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        boolean uscita = false;
+        String[] opzioni = {"Menu", "Inserimento Pilota", "Inserimento Squadra", "Inserimento gara", "Esci"};
+        
+        do{
+            
+            try{
+                
+                switch(Tools.Menu(opzioni, sc)) {
+                    
+                    case 1 -> {
+                        
+                        
+                        
+                    }
+
+                    case 2 -> {
+
+                        
+                        
+                    }
+
+                    case 3 -> {
+
+                        
+                        
+                    }
+
+                    case 4 -> {
+                        uscita = true;
+                        sc.close();
+                    }
+                    
+                }
+                
+                
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+        } while(!uscita);
+
+        System.out.println("Fine programma.");
+
+
+
+
+
+
+        Cronometro cronometro = new Cronometro();
+
+        boolean esci = false;
+        String[] opzioniCronometro = {"Menu", "Avvia", "Pausa", "Riprendi", "Reset", "Visualizza durata", "Esci"};
+
+        do {
+
+            try {
+
+                switch(Tools.Menu(opzioniCronometro, sc)) {
+
+                    case 1 -> {
+                        System.out.println("Il cronometro è stato avviato.");
+                        cronometro.avvia();
+                    }
+
+                    case 2 -> {
+                        System.out.println("Il cronometro è stato messo in pausa.");
+                        cronometro.pausa();
+                    }
+
+                    case 3 -> {
+                        System.out.println("Il cronometro ha ripreso a contare.");
+                        cronometro.riprendi();
+                    }
+
+                    case 4 -> {
+                        System.out.println("Il cronometro è stato resettato.");
+                        cronometro.reset();
+                    }
+
+                    case 5 -> {
+                        System.out.println("Durata cronometro.");
+                        System.out.println("Durata: " + cronometro.getDurata());
+                    }
+
+                    case 6 -> esci = true;
+
+                }
+
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        } while(!esci);
+        
+    }
+}

@@ -1,0 +1,38 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Random rn = new Random();
+        int tempo;
+
+        try {
+
+            Pilota p1 = new Pilota("Francesco", "Marchettos", "Giappone");
+            Pilota p2 = new Pilota("Riccardo", "Gianesellos", "Africa");
+            System.out.println(p1.toString());
+            System.out.println(p2.toString());
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+        try {
+
+            Cronometro cronometro = new Cronometro();
+            tempo = rn.nextInt(0, 99) + 1;
+            cronometro.setStartTime();
+            Tools.Wait(tempo);
+            cronometro.setEndTime();
+            cronometro.calcolaIntTimer();
+            System.out.println(cronometro.getTempoGiro());
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}

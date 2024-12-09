@@ -1,62 +1,48 @@
+import java.time.LocalTime;
+import java.util.concurrent.ExecutionException;
+
 public class Cronometro {
 
-    private long secondi;        // Contatore dei secondi
-    private boolean inPausa;     // Flag per controllare se il cronometro è in pausa
-    private boolean inEsecuzione; // Flag per sapere se il cronometro è in esecuzione
-    private Thread cronometroThread; // Thread per gestire il conteggio dei secondi
+    // Attributi
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private int tempoGiro;
 
-    // Costruttore per inizializzare il cronometro
+
+    // Costruttore
     public Cronometro() {
-        reset();  // Inizializza il cronometro
+        setStartTime();
+        setEndTime();
+
     }
 
-    // Metodo per avviare il cronometro
-    public void avvia() {
-        if (!inEsecuzione) {
-            inEsecuzione = true;
-            cronometroThread = new Thread(() -> {
-                while (inEsecuzione) {
-                    try {
-                        // Incrementiamo il contatore ogni secondo
-                        Thread.sleep(1000); // Pausa di 1 secondo
-                        if (!inPausa) {
-                            secondi++; // Aumentiamo i secondi se non siamo in pausa
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            cronometroThread.start(); // Avvia il thread
-        }
+    void setStartTime() {
+        startTime = LocalTime.now();
     }
 
-    // Metodo per mettere in pausa il cronometro
-    public void pausa() {
-        inPausa = true; // Mettiamo in pausa il cronometro
+    void setEndTime() {
+        endTime = LocalTime.now();
     }
 
-    // Metodo per riprendere il cronometro
-    public void riprendi() {
-        inPausa = false; // Riprendiamo il cronometro dalla pausa
+    int getTempoGiro() {
+        return tempoGiro;
     }
 
-    // Metodo per resettare il cronometro
-    public void reset() {
-        secondi = 0;        // Resettiamo il contatore dei secondi
-        inPausa = false;    // Resettiamo lo stato di pausa
-        inEsecuzione = false; // Lo stato di esecuzione è falso finché non avviamo il cronometro
-        if (cronometroThread != null) {
-            cronometroThread.interrupt();  // Interrompiamo il thread esistente
-        }
+
+    // Metodo che calcola il tempo sottraendo al tempo finale il tempo iniziale
+    public void calcolaIntTimer() throws Exception {
+        int tempoGiro;
+
+        tempoGiro = this.endTime.toSecondOfDay() - this.startTime.toSecondOfDay();
+
+        if(tempoGiro == 0)
+            throw new Exception("Cronometro stop.");
+
+        this.tempoGiro = tempoGiro;
     }
 
-    // Metodo per ottenere la durata in formato HH:mm:ss
-    public String getDurata() {
-        long ore = secondi / 3600;            // Calcoliamo le ore
-        long minuti = (secondi % 3600) / 60;  // Calcoliamo i minuti
-        long secondiRestanti = secondi % 60;  // Calcoliamo i secondi
-
-        return String.format("%02d:%02d:%02d", ore, minuti, secondiRestanti);  // Restituiamo in formato HH:mm:ss
+    @Override
+    public String toString() {
+        return String.format("%d", tempoGiro);
     }
 }

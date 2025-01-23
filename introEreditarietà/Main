@@ -1,0 +1,16 @@
+public class Main {
+    public static void main(String[] args) {
+        Persona p = new Persona("Pippo", "Pluto", 99, "Rovigo", "Rosso", "Inter");
+        Studente s = new Studente("Bazaj", "Francesco", 33, "Napoli", "Nero", "Milan");
+        Studente s1 = new Studente();
+        //p.presentazione2(); //Il metodo presentazione2 è utilizzabile solo nella classe figlio in cui è definito e non nella classe genitore, a differenza dei metodi definiti nella classe genitore che possono essere utilizzati anche nelle classi figlie
+        System.out.println(s1.getNome());
+        System.out.println(p.presentazione());
+        System.out.println(s.presentazione());
+        System.out.println(s.presentazione2());
+        Persona p3;
+        p3 = s; // up-casting posso assegnare un oggetto di una sottoclasse ad una variabile della superclasse
+        // Trovo il metodo di persona
+        System.out.println(p3.metodoGenerico());
+    }
+}

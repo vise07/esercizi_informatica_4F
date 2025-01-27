@@ -6,5 +6,6 @@ public class Main {
         Docente d2 = new Docente("Gianni", 'M', "Via gianesella 104", "player", "Telecomunicazioni");
         System.out.println(d2);
 
+        System.out.println(d2.ritornaIndirizzoMaiuscolo());
     }
 }

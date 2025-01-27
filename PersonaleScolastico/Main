@@ -1,0 +1,10 @@
+public class Main {
+    public static void main(String[] args) {
+        Dipendente d1 = new Dipendente("Francesco", 'M', "Via dei Pini 92");
+        System.out.println(d1);
+
+        Docente d2 = new Docente("Gianni", 'M', "Via gianesella 104", "player", "Telecomunicazioni");
+        System.out.println(d2);
+
+    }
+}

@@ -1,4 +1,4 @@
-public class Docente extends Dipendente{
+public class Docente extends Dipendente {
     private String ruolo;
     private String disciplina;
 
@@ -31,11 +31,11 @@ public class Docente extends Dipendente{
 
     @Override
     public String toString() {
-        return String.format("%s - %c - %s - %f - %s - %s", super.getNominativo(), super.getGenere(), super.getIndirizzo(), super.getIncentivo(), ruolo, disciplina);
+        return String.format("%s - %c - %s - %.2f - %s - %s", super.getNominativo(), super.getGenere(), super.getIndirizzo(), getIncentivo(), ruolo, disciplina);
     }
 
     public String ritornaIndirizzoMaiuscolo() {
-        return indirizzo.toUpperCase();
-        // return getIndirizzo().toUpperCase();
+//        return indirizzo.toUpperCase(); VIOLA L'INCAPSULAMENTO
+        return getIndirizzo().toUpperCase();
     }
 }

@@ -29,10 +29,23 @@ public class Concessionaria {
         this.nome = nome;
     }
 
+    public void addVeicolo(Veicolo a) throws Exception {
+        if(!concessionaria.contains(a)) {
+            concessionaria.add(a);
+        } else {
+            throw new Exception("Il veicolo è già presente nella concessionaria.");
+        }
+    }
+
     // Metodo per visualizzare i veicoli della concessionaria
     public void stampaConcessionaria() {
         for (Veicolo a : concessionaria) {
             System.out.println(a);
         }
+    }
+
+    // Metodo che ritorna il numero di veicoli della concessionaria
+    public int contNumConcessionaria() {
+        return concessionaria.size();
     }
 }

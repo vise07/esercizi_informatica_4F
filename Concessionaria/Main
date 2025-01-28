@@ -1,0 +1,12 @@
+public class Main {
+    public static void main(String[] args) {
+
+        Automobile a1 = new Automobile("lambo", "Aventador", 230000, 2);
+        Moto m1 = new Moto("BMW", "rr", 12000, 1000);
+
+        System.out.println(a1);
+        System.out.println(m1);
+
+        Concessionaria concessionaria = new Concessionaria("Fast");
+    }
+}

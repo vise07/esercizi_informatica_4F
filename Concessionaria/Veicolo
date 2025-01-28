@@ -1,0 +1,41 @@
+public class Veicolo {
+
+    // Attributi
+    private final String marca;
+    private String modello;
+    private int prezzo;
+
+    // Costruttore
+    public Veicolo(String marca, String modello, Integer prezzo) {
+        this.marca = marca;
+        this.modello = modello;
+        this.prezzo = prezzo;
+    }
+
+    // Getter e Setter
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModello() {
+        return modello;
+    }
+
+    public void setModello(String modello) {
+        this.modello = modello;
+    }
+
+    public Integer getPrezzo() {
+        return prezzo;
+    }
+
+    public void setPrezzo(Integer prezzo) {
+        this.prezzo = prezzo;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %d", marca, modello, prezzo);
+    }
+}

@@ -1,4 +1,11 @@
+import utility.Tools;
+import veicolo.Automobile;
+import veicolo.Moto;
+import veicolo.Veicolo;
+
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Concessionaria {
 
@@ -8,44 +15,158 @@ public class Concessionaria {
 
     // Costruttore
     public Concessionaria(String nome) {
-        concessionaria = new ArrayList<>();
         this.nome = nome;
     }
 
-    // Getter e setter
+    // Getter e Setter
     public ArrayList<Veicolo> getConcessionaria() {
         return concessionaria;
-    }
-
-    public void setConcessionaria(ArrayList<Veicolo> concessionaria) {
-        this.concessionaria = concessionaria;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    // Meotodo per leggere un veicolo
+    public Veicolo leggiVeicolo(Scanner sc, Boolean lettura) {
+
+        Veicolo v = null;
+
+        System.out.println("Inserisci la marca:");
+        String marca = sc.nextLine();
+        System.out.println("Inserisci il modello:");
+        String modello = sc.nextLine();
+
+        v = new Veicolo(marca, modello, 0);
+
+        if(lettura) {
+
+            System.out.println("Inserisci il prezzo:");
+            int prezzo = Integer.parseInt(sc.nextLine());
+
+            String[] scelta = {"MENU", "AUTOMOBILE", "MOTO"};
+            boolean uscita = false;
+
+            System.out.println("Scegli il tipo di veicolo che desideri inserire:");
+
+            do {
+
+                switch (Tools.Menu(scelta, sc)) {
+                    case 1 -> {
+                        System.out.println("Inserisci il numero delle porte:");
+                        int numeroPorte = Integer.parseInt(sc.nextLine());
+                        v = new Automobile(marca, modello, prezzo, numeroPorte);
+                    }
+                    case 2 -> {
+                        System.out.println("Inserisci la cilindrata:");
+                        int cilindrata = Integer.parseInt(sc.nextLine());
+                        v = new Moto(marca, modello, prezzo, cilindrata);
+                    }
+                    default -> {
+                        System.out.println("Opzione non valida");
+                        uscita = true;
+                    }
+                }
+
+            } while(uscita);
+        }
+
+        return v;
     }
 
-    public void addVeicolo(Veicolo a) throws Exception {
-        if(!concessionaria.contains(a)) {
-            concessionaria.add(a);
+    // Metodo per aggiungere un veicolo
+    public void addVeicolo(Veicolo v) throws Exception {
+        if (!concessionaria.contains(v)) {
+            concessionaria.add(v);
         } else {
-            throw new Exception("Il veicolo è già presente nella concessionaria.");
+            throw new Exception("Veicolo già presente.");
         }
     }
 
-    // Metodo per visualizzare i veicoli della concessionaria
+    // Metodo per rimuovere un veicolo
+    public void removeVeicolo(Veicolo v) throws Exception {
+        if (concessionaria.contains(v)) {
+            concessionaria.remove(v);
+        } else {
+            throw new Exception("Veicolo non trovato.");
+        }
+    }
+
+    // Metodo per visualizzare i veicoli
     public void stampaConcessionaria() {
-        for (Veicolo a : concessionaria) {
-            System.out.println(a);
+        if (concessionaria.isEmpty()) {
+            System.out.println("Nessun veicolo disponibile.");
+        } else {
+            for (Veicolo v : concessionaria) {
+                System.out.println(v);
+            }
         }
     }
 
-    // Metodo che ritorna il numero di veicoli della concessionaria
-    public int contNumConcessionaria() {
-        return concessionaria.size();
+    // Metodo per ottenere un veicolo tramite marca e modello
+    public Veicolo getVeicoloByMarcaModello(String marca, String modello) {
+        if(!concessionaria.isEmpty()) {
+            for (Veicolo veicolo : concessionaria) {
+                if (veicolo.getMarca().equals(marca) && veicolo.getModello().equals(modello)) {
+                    return veicolo;
+                }
+            }
+        } else {
+            System.out.println("Nessun veicolo disponibile.");
+        }
+
+        return null;
+    }
+
+    // Metodo che aggiorna un veicolo
+    public Veicolo updateVeicolo(Veicolo veicolo, Scanner sc) {
+
+            if(veicolo != null) {
+                System.out.println("Veicolo trovato, cosa vuoi aggiornare:");
+
+                String terzaScelta = null;
+                if (veicolo instanceof Automobile) { // controllo se Veicolo è un istanza di Automobile o Moto
+                    terzaScelta = "NUMERO DI PORTE";
+                } else if (veicolo instanceof Moto) {
+                    terzaScelta = "CILINDRATA";
+                }
+
+                String[] scelta = {"MENU", "MODELLO", "PREZZO", terzaScelta};
+                boolean esci = false;
+
+                do {
+
+                    switch (Tools.Menu(scelta, sc)) {
+
+                        case 1 -> {
+                            System.out.println("Inserisci il nuovo modello:");
+                            veicolo.setModello(sc.nextLine());
+                        }
+
+                        case 2 -> {
+                            System.out.println("Inserisci il nuovo prezzo:");
+                            veicolo.setPrezzo(Integer.parseInt(sc.nextLine()));
+                        }
+
+                        case 3 -> {
+
+                            if (veicolo instanceof Automobile) {
+                                System.out.println("Inserisci il nuovo numero di porte:");
+                                Automobile a = (Automobile) veicolo; // Cast dell'oggetto Veicolo in Automobile
+                                a.setNumeroPorte(Integer.parseInt(sc.nextLine()));
+                            } else if (veicolo instanceof Moto) {
+                                System.out.println("Inserisci la nuova cilindrata:");
+                                Moto m = (Moto) veicolo; // Cast dell'oggetto Veicolo in Moto
+                                m.setCilindrata(Integer.parseInt(sc.nextLine()));
+                            }
+
+                        }
+                        default -> esci = true;
+                    }
+
+                } while (esci);
+            }
+
+            return veicolo;
     }
 }

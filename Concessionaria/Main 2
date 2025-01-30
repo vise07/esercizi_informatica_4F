@@ -1,0 +1,49 @@
+import utility.Tools;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Inserimento, Visualizza, Rimuovi, Aggiorna
+
+        String[] opzioni = {"MENU", "VISUALIZZA", "INSERISCI", "RIMUOVI", "AGGIORNA", "FINE"};
+        boolean uscita = false;
+
+        try {
+
+            do {
+
+                switch (Tools.Menu(opzioni, sc)) {
+                    case 1 -> {
+                        System.out.println("Visualizza veicoli:");
+
+                    }
+                    case 2 -> {
+                        System.out.println("Inserimento veicolo");
+
+                    }
+                    case 3 -> {
+                        System.out.println("Eliminazione veicolo:");
+
+                    }
+                    case 4 -> {
+                        System.out.println("Aggiornamento veicolo:");
+
+                    }
+                    case 5 -> uscita = true;
+                }
+
+            } while (!uscita);
+
+        } catch (Exception e) {
+            System.out.println("Errore.");
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Fine programma.");
+
+    }
+}

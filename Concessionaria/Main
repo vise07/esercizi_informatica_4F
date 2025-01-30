@@ -1,23 +1,87 @@
+import utility.*;
+import veicolo.*;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        Automobile a1 = new Automobile("lambo", "Aventador", 230000, 2);
-        Moto m1 = new Moto("BMW", "rr", 12000, 1000);
-
-        /*System.out.println(a1);
-        System.out.println(m1);*/
-
-        Concessionaria concessionaria = new Concessionaria("Fast");
+        Concessionaria concessionaria = new Concessionaria("VeicoloFast");
+        String[] opzioni = {"MENU", "VISUALIZZA", "INSERISCI", "RIMUOVI", "AGGIORNA", "FINE"};
+        boolean uscita = false;
 
         try {
-            concessionaria.addVeicolo(a1);
-            concessionaria.addVeicolo(m1);
+
+            do {
+
+                switch (Tools.Menu(opzioni, sc)) {
+
+                    // Visualizzazione
+                    case 1 -> {
+                        System.out.println("Visualizza veicoli:");
+                        concessionaria.stampaConcessionaria();
+                    }
+
+                    // Inserimento
+                    case 2 -> {
+                        System.out.println("Inserimento veicolo:");
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, true);
+
+                        try {
+                            if(veicolo != null) {
+                                concessionaria.addVeicolo(veicolo);
+                                System.out.println("Veicolo inserito correttamente.");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Errore nell'inserimento: " + e.getMessage());
+                        }
+                    }
+
+                    // Eliminazione
+                    case 3 -> {
+                        System.out.println("Eliminazione veicolo:");
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
+
+                        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
+
+                        try {
+                            if(veicolo != null) {
+                                System.out.println("Veicolo rimosso correttamente.");
+                                concessionaria.removeVeicolo(veicolo);
+                            }
+                        } catch(Exception e) {
+                            System.out.println("Errore nella rimozione: " + e.getMessage());
+                        }
+                    }
+
+                    // Aggiornamento
+                    case 4 -> {
+                        System.out.println("Aggiornamento veicolo:");
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
+
+                        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
+
+                        if(veicolo != null) {
+                            veicolo = concessionaria.updateVeicolo(veicolo, sc);
+                        } else {
+                            System.out.println("Veicolo non trovato, non modificabile.");
+                        }
+                    }
+
+                    // Uscita
+                    case 5 -> uscita = true;
+                }
+
+            } while (!uscita);
+
         } catch (Exception e) {
+            System.out.println("Errore.");
             System.out.println(e.getMessage());
         }
 
-        concessionaria.stampaConcessionaria();
-
-        System.out.println("La concessionaria è composta da " + concessionaria.contNumConcessionaria() + " veicoli.");
+        System.out.println("Fine programma.");
     }
 }

@@ -1,3 +1,4 @@
+package veicolo;
 public class Moto extends Veicolo{
 
     // Attributi
@@ -21,6 +22,6 @@ public class Moto extends Veicolo{
     // toString
     @Override
     public String toString() {
-        return String.format("%s - %s - %d - %d", super.getMarca(), super.getModello(), super.getPrezzo(), cilindrata);
+        return String.format("Moto -> Marca: %s - Modello: %s - Prezzo: %d - Cilindrata: %d", super.getMarca(), super.getModello(), super.getPrezzo(), cilindrata);
     }
 }

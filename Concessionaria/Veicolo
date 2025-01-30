@@ -1,3 +1,4 @@
+package veicolo;
 public class Veicolo {
 
     // Attributi
@@ -36,6 +37,6 @@ public class Veicolo {
     // toString
     @Override
     public String toString() {
-        return String.format("%s - %s - %d", marca, modello, prezzo);
+        return String.format("Veicolo -> Marca: %s - Modello: %s - Prezzo: %d", marca, modello, prezzo);
     }
 }

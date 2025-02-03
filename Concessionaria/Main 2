@@ -7,7 +7,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         Concessionaria concessionaria = new Concessionaria("VeicoloFast");
-        String[] opzioni = {"MENU", "VISUALIZZA", "INSERISCI", "RIMUOVI", "AGGIORNA", "FINE"};
+        String[] opzioni = {"MENU", "VISUALIZZA", "INSERISCI", "RIMUOVI", "AGGIORNA", "FINE", "AGGIORNA PREZZO", "VISUALIZZA PER PREZZO", "VISUALIZZA PER MARCA"};
         boolean uscita = false;
 
         try {
@@ -25,25 +25,85 @@ public class Main {
                     // Inserimento
                     case 2 -> {
                         System.out.println("Inserimento veicolo:");
-                        inserisciVeicolo(concessionaria, sc);
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, true);
+
+                        try {
+                            if(veicolo != null) {
+                                concessionaria.addVeicolo(veicolo);
+                                System.out.println("Veicolo inserito correttamente.");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Errore nell'inserimento: " + e.getMessage());
+                        }
                     }
 
                     // Eliminazione
                     case 3 -> {
                         System.out.println("Eliminazione veicolo:");
-                        rimuoviVeicolo(concessionaria, sc);
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
+
+                        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
+
+                        try {
+                            if(veicolo != null) {
+                                System.out.println("Veicolo rimosso correttamente.");
+                                concessionaria.removeVeicolo(veicolo);
+                            }
+                        } catch(Exception e) {
+                            System.out.println("Errore nella rimozione: " + e.getMessage());
+                        }
                     }
 
                     // Aggiornamento
                     case 4 -> {
                         System.out.println("Aggiornamento veicolo:");
-                        aggiornaVeicolo(concessionaria, sc);
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
+
+                        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
+
+                        if(veicolo != null) {
+                            veicolo = concessionaria.updateVeicolo(veicolo, sc);
+                        } else {
+                            System.out.println("Veicolo non trovato, non modificabile.");
+                        }
                     }
 
                     // Uscita
                     case 5 -> uscita = true;
 
-                    default -> System.out.println("Opzione non valida.");
+                    // Aggiornamento solo del prezzo
+                    case 6 -> {
+                        System.out.println("Aggiornamento prezzo:");
+
+                        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
+
+                        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
+
+                        if(veicolo != null) {
+                            veicolo = concessionaria.aggiornaPrezzo(veicolo, sc);
+                        } else {
+                            System.out.println("Veicolo non trovato, non modificabile.");
+                        }
+                    }
+
+                    // Visualizzazione per prezzo inferiore
+                    case 7 -> {
+                        System.out.println("Visualizzazione per prezzo, inserisci il prezzo massimo:");
+                        int prezzoMax = Integer.parseInt(sc.nextLine());
+
+                        concessionaria.stampaConcessionariaPerPrezzo(prezzoMax);
+                    }
+
+                    // Visualizzazione per marca
+                    case 8 -> {
+                        System.out.println("Visualizzazione per marca, inserisci la marca:");
+                        String marca = sc.nextLine();
+
+                        concessionaria.stampaConcessionariaPerMarca(marca);
+                    }
                 }
 
             } while (!uscita);
@@ -54,48 +114,5 @@ public class Main {
         }
 
         System.out.println("Fine programma.");
-    }
-
-    // Metodo per inserire un veicolo
-    public static void inserisciVeicolo(Concessionaria concessionaria, Scanner sc) {
-        Veicolo veicolo = concessionaria.leggiVeicolo(sc, true);
-
-        try {
-            if(veicolo != null) {
-                concessionaria.addVeicolo(veicolo);
-                System.out.println("Veicolo inserito correttamente.");
-            }
-        } catch (Exception e) {
-            System.out.println("Errore nell'inserimento: " + e.getMessage());
-        }
-    }
-
-    // Metodo per rimuovere un veicolo
-    public static void rimuoviVeicolo(Concessionaria concessionaria, Scanner sc) {
-        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
-
-        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
-
-        try {
-            if(veicolo != null) {
-                System.out.println("Veicolo rimosso correttamente.");
-                concessionaria.removeVeicolo(veicolo);
-            }
-        } catch(Exception e) {
-            System.out.println("Errore nella rimozione: " + e.getMessage());
-        }
-    }
-
-    // Metodo per aggiornare un veicolo
-    public static void aggiornaVeicolo(Concessionaria concessionaria, Scanner sc) {
-        Veicolo veicolo = concessionaria.leggiVeicolo(sc, false);
-
-        veicolo = concessionaria.getVeicoloByMarcaModello(veicolo.getMarca(), veicolo.getModello());
-
-        if(veicolo != null) {
-            veicolo = concessionaria.updateVeicolo(veicolo, sc);
-        } else {
-            System.out.println("Veicolo non trovato, non modificabile.");
-        }
     }
 }

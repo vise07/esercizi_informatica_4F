@@ -1,1 +1,28 @@
+package veicolo;
 
+public class Camion extends Veicolo {
+
+    // Attributi
+    private int peso;
+
+    // Costruttore
+    public Camion(String marca, String modello, Integer prezzo, int peso) {
+        super(marca, modello, prezzo);
+        this.peso = peso;
+    }
+
+    // Getter e Setter
+    public int getPeso() {
+        return peso;
+    }
+
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
+
+    // toString
+    @Override
+    public String toString() {
+        return String.format("Camion -> Marca: %s - Modello: %s - Prezzo: %d - Peso: %d", super.getMarca(), super.getModello(), super.getPrezzo(), peso);
+    }
+}

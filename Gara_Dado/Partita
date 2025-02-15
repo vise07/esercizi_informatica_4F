@@ -1,0 +1,40 @@
+public class Partita {
+    private Giocatore g1;
+    private Giocatore g2;
+
+    public Partita(Giocatore g1, Giocatore g2) {
+        this.g1 = g1;
+        this.g2 = g2;
+    }
+
+    public void IniziaGara() {
+        g1.getDado().Lancia();
+        g2.getDado().Lancia();
+
+        if(g1.getDado().getValLancio() > g2.getDado().getValLancio()) g1.IncrementaVittorie();
+        else if(g1.getDado().getValLancio() < g2.getDado().getValLancio()) g2.IncrementaVittorie();
+        else g1.IncrementaVittorie() g2.IncrementaVittorie();
+
+        }
+    }
+
+    public boolean FineGara() {
+
+    }
+
+    public String Winner() {
+
+    }
+
+    public void Round() {
+
+    }
+
+    public void GameWin() {
+
+    }
+
+    public void ResetGame() {
+
+    }
+}

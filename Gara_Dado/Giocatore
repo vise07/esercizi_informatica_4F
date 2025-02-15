@@ -1,0 +1,57 @@
+import java.util.Objects;
+
+public class Giocatore implements Comparable<Giocatore> {
+    private String nome;
+    private Integer vittorie;
+    private Dado dado;
+
+    public Giocatore(String nome, int vittorie, Dado dado) {
+        this.nome = nome;
+        this.vittorie = vittorie;
+        this.dado = dado;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getVittorie() {
+        return vittorie;
+    }
+
+    public void setVittorie(int vittorie) {
+        this.vittorie = vittorie;
+    }
+
+    public Dado getDado() {
+        return dado;
+    }
+
+    public void setDado(Dado dado) {
+        this.dado = dado;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Giocatore -> Nome: %s - Vittore: %d - Dado: %s", nome, vittorie, dado);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Giocatore g)) return false;
+        return g.nome.equals(nome);
+    }
+
+    @Override
+    public int compareTo(Giocatore g) {
+        return vittorie.compareTo(g.vittorie);
+    }
+
+    public int IncrementaVittorie() {
+        return vittorie++;
+    }
+}

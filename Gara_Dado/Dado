@@ -1,0 +1,37 @@
+import java.util.Random;
+
+public class Dado implements Comparable<Dado> {
+    private final int nFacce = 6;
+    private Integer valLancio;
+
+    public Dado(int valLancio) {
+        this.valLancio = valLancio;
+    }
+
+    public int getnFacce() {
+        return nFacce;
+    }
+
+    public int getValLancio() {
+        return valLancio;
+    }
+
+    public void setValLancio(int valLancio) {
+        this.valLancio = valLancio;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Dado -> Numero facce. %d - Valore faccia: %d", nFacce, valLancio);
+    }
+
+    public void Lancia() {
+        Random rm = new Random();
+        valLancio = rm.nextInt(1, nFacce);
+    }
+
+    @Override
+    public int compareTo(Dado d) {
+        return d.valLancio.compareTo(valLancio);
+    }
+}

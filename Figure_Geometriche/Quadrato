@@ -1,0 +1,27 @@
+public class Quadrato implements CorpoSolido {
+    private double lato;
+
+    public Quadrato(double lato) {
+        this.lato = lato;
+    }
+
+    @Override
+    public double superficie() {
+        return Math.pow(lato, 2);
+    }
+
+    @Override
+    public double volume() {
+        return 0;
+    }
+
+    @Override
+    public double peso() {
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Sono un quadrato, la mia superficie è: %.2f e il mio volume è: %.2f", superficie(), volume());
+    }
+}

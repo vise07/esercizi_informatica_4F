@@ -2,35 +2,19 @@ public class Smartphone extends ProdottoElettronico {
     private String modello;
     private int memoria;
 
-    public Smartphone(String codiceProdotto, String marca, double prezzo, String modello, int memoria) {
-        super(codiceProdotto, marca, prezzo);
+    public Smartphone(int codice, String marca, double prezzo, int quantita, String modello, int memoria) {
+        super(codice, marca, prezzo, quantita);
         this.modello = modello;
-        this.memoria = memoria;
-    }
-
-    public String getModello() {
-        return modello;
-    }
-
-    public void setModello(String modello) {
-        this.modello = modello;
-    }
-
-    public int getMemoria() {
-        return memoria;
-    }
-
-    public void setMemoria(int memoria) {
         this.memoria = memoria;
     }
 
     @Override
     public String toString() {
-        return String.format(super.toString() + " Modello: %s Memoria: %d", modello, memoria);
+        return "Smartphone [modello=" + modello + ", memoria=" + memoria + "GB, " + super.toString();
     }
-
     @Override
-    public Smartphone clone() {
+    public Smartphone clone() throws CloneNotSupportedException {
         return (Smartphone) super.clone();
     }
+
 }

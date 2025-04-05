@@ -1,75 +1,88 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import static utility.Tools.*;
 
-import static utility.Tools.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        boolean esci = false;
+        String[] opzioni = {
+                "NEGOZIO ELETTRONICA",
+                "Inserisci smartphone",
+                "Inserisci manuale",
+                "Cerca prodotto",
+                "Modifica prezzo",
+                "Modifica quantità",
+                "Rimuovi prodotto",
+                "Visualizza prodotti",
+                "Esci"
+        };
+
         Scanner sc = new Scanner(System.in);
-        NegozioElettronica negozio = new NegozioElettronica();
-        String[] opzioni = {"MENU", "AGGIUNGI SMARTPHONE", "AGGIUNGI MANUALE", "VISUALIZZA PRODOTTI", "RIMUOVI PRODOTTO", "CERCA PRODOTTO", "ESCI"};
+        int scelta;
 
         do {
-            switch (Menu(opzioni, sc)) {
-                case 1 -> {
-                    System.out.println("Inserisci il codice prodotto:");
-                    String codiceProdotto = sc.nextLine();
-                    System.out.println("Inserisci la marca:");
-                    String marca = sc.nextLine();
-                    System.out.println("Inserisci il prezzo:");
-                    double prezzo = Double.parseDouble(sc.nextLine());
-                    System.out.println("Inserisci il modello:");
-                    String modello = sc.nextLine();
-                    System.out.println("Inserisci la memoria (GB):");
-                    int memoria = Integer.parseInt(sc.nextLine());
-
-                    Smartphone smartphone = new Smartphone(codiceProdotto, marca, prezzo, modello, memoria);
-                    negozio.aggiungiProdotto(smartphone);
-                    System.out.println("Smartphone aggiunto!");
+            scelta = Menu(opzioni, sc);
+            try {
+                switch (scelta) {
+                    case 1:
+                        Prodotto p = FrontEnd.inserimentoSmartphone(sc);
+                        System.out.println("Inserito: " + p);
+                        break;
+                    case 2:
+                        Prodotto m = FrontEnd.inserimentoManuale(sc);
+                        System.out.println("Inserito: " + m);
+                        break;
+                    case 3:
+                        System.out.print("Inserisci codice: ");
+                        int codice = Integer.parseInt(sc.nextLine());
+                        Prodotto trovato = FrontEnd.ricercaProdotto(codice);
+                        System.out.println(trovato != null ? trovato : "Prodotto non trovato");
+                        break;
+                    case 4:
+                        System.out.print("Inserisci codice: ");
+                        int codPrezzo = Integer.parseInt(sc.nextLine());
+                        System.out.print("Nuovo prezzo: ");
+                        double nuovoPrezzo = Double.parseDouble(sc.nextLine());
+                        FrontEnd.modificaPrezzo(codPrezzo, nuovoPrezzo);
+                        System.out.println("Prezzo modificato");
+                        break;
+                    case 5:
+                        System.out.print("Inserisci codice: ");
+                        int codQuant = Integer.parseInt(sc.nextLine());
+                        System.out.print("Nuova quantità: ");
+                        int nuovaQuant = Integer.parseInt(sc.nextLine());
+                        FrontEnd.modificaQuantita(codQuant, nuovaQuant);
+                        System.out.println("Quantità modificata");
+                        break;
+                    case 6:
+                        System.out.print("Inserisci codice: ");
+                        int codRimuovi = Integer.parseInt(sc.nextLine());
+                        boolean rimosso = FrontEnd.rimuoviProdotto(codRimuovi);
+                        if(rimosso){
+                            System.out.println("Rimosso con successo");
+                        }else{
+                            System.out.println("Prodotto non trovato");
+                        }
+                        break;
+                    case 7:
+                        try {
+                            ArrayList<Prodotto> prodotti = FrontEnd.visualizzaProdotti();
+                            for (Prodotto p1 : prodotti) {
+                                System.out.println(p1);
+                            }
+                        } catch (CloneNotSupportedException e) {
+                            System.out.println("Errore durante la visualizzazione: " + e.getMessage());
+                        }
+                        break;
                 }
-                case 2 -> {
-                    System.out.println("Inserisci il nome del manuale:");
-                    String nome = sc.nextLine();
-                    System.out.println("Inserisci la descrizione:");
-                    String descrizione = sc.nextLine();
-                    System.out.println("Inserisci l'autore:");
-                    String autore = sc.nextLine();
-                    System.out.println("Inserisci l'ISBN:");
-                    String isbn = sc.nextLine();
-                    System.out.println("Inserisci il prezzo:");
-                    double prezzo = Double.parseDouble(sc.nextLine());
-                    System.out.println("Inserisci la quantità:");
-                    int quantita = Integer.parseInt(sc.nextLine());
-                    System.out.println("Inserisci l'argomento:");
-                    String argomento = sc.nextLine();
-
-                    Manuale manuale = new Manuale(nome, descrizione, autore, isbn, prezzo, quantita, argomento);
-                    negozio.aggiungiProdotto(manuale);
-                    System.out.println("Manuale aggiunto!");
-                }
-                case 3 -> {
-                    System.out.println("=== PRODOTTI NEL NEGOZIO ===");
-                    negozio.visualizzaProdotti();
-                }
-                case 4 -> {
-                    System.out.println("Inserisci il codice prodotto da rimuovere:");
-                    String codice = sc.nextLine();
-                    negozio.rimuoviProdotto(codice);
-                    System.out.println("Prodotto rimosso!");
-                }
-                case 5 -> {
-                    System.out.println("Inserisci il codice prodotto da cercare:");
-                    String codice = sc.nextLine();
-                    Prodotto prodotto = negozio.cercaProdotto(codice);
-                    if (prodotto != null) {
-                        System.out.println("Prodotto trovato: " + prodotto);
-                    } else {
-                        System.out.println("Prodotto non trovato.");
-                    }
-                }
-                case 6 -> esci = true;
-                default -> System.out.println("Opzione inserita non valida");
+            } catch (Exception e) {
+                System.out.println("Errore: " + e.getMessage());
             }
-        } while (!esci);
+            if (scelta != 8) {
+                System.out.println("Premi invio per continuare...");
+                sc.nextLine();
+            }
+        } while (scelta != 8);
+        sc.close();
     }
 }

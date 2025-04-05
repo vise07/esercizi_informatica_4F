@@ -1,44 +1,36 @@
-public abstract class ProdottoElettronico implements Prodotto {
-    private String codiceProdotto;
-    private String marca;
-    private double prezzo;
+public class ProdottoElettronico implements Prodotto {
+    protected int codice;
+    protected String marca;
+    protected double prezzo;
+    protected int quantita;
 
-    public ProdottoElettronico(String codiceProdotto, String marca, double prezzo) {
-        this.codiceProdotto = codiceProdotto;
+    public ProdottoElettronico(int codice, String marca, double prezzo, int quantita) {
+        this.codice = codice;
         this.marca = marca;
         this.prezzo = prezzo;
+        this.quantita = quantita;
     }
 
     @Override
-    public String getCodice() {
-        return codiceProdotto;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
+    public int getCodice() { return codice;}
     @Override
-    public double getPrezzo() {
-        return prezzo;
-    }
-
+    public String getNome() { return marca;}
     @Override
-    public void setPrezzo(double prezzo) {
-        this.prezzo = prezzo;
-    }
+    public double getPrezzo() { return prezzo;}
+    @Override
+    public int getQuantita() { return quantita;}
+    @Override
+    public void setPrezzo(double prezzo) { this.prezzo = prezzo;}
+    @Override
+    public void setQuantita(int quantita) { this.quantita = quantita; }
 
     @Override
     public String toString() {
-        return String.format("Codice: %s, Marca: %s, Prezzo: %.2f", codiceProdotto, marca, prezzo);
+        return "ProdottoElettronico [codice=" + codice + ", marca=" + marca +
+                ", prezzo=" + prezzo + "€, quantita=" + quantita + "]";
     }
-
     @Override
-    public ProdottoElettronico clone() {
-        try {
-            return (ProdottoElettronico) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public ProdottoElettronico clone() throws CloneNotSupportedException {
+        return (ProdottoElettronico) super.clone();
     }
 }

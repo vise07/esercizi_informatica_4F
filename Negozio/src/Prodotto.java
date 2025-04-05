@@ -1,7 +1,9 @@
 public interface Prodotto extends Cloneable {
-    String getCodice();
+    int getCodice();
+    String getNome();
     double getPrezzo();
+    int getQuantita();
     void setPrezzo(double prezzo);
-    String toString();
-    Prodotto clone();
+    void setQuantita(int quantita);
+    Prodotto clone() throws CloneNotSupportedException;
 }

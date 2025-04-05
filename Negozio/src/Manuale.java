@@ -1,22 +1,18 @@
 public class Manuale extends Libro {
     private String argomento;
 
-    public Manuale(String nome, String descrizione, String autore, String isbn, double prezzo, int quantita, String argomento) {
-        super(nome, descrizione, autore, isbn, prezzo, quantita);
+    public Manuale(int codice, String nome, String descrizione, String autore,
+                   double prezzo, int quantita, String argomento) {
+        super(codice, nome, descrizione, autore, prezzo, quantita);
         this.argomento = argomento;
-    }
-
-    public String getArgomento() {
-        return argomento;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", Argomento: " + argomento;
+        return "Manuale [argomento=" + argomento + ", " + super.toString();
     }
-
     @Override
-    public Manuale clone() {
+    public Manuale clone() throws CloneNotSupportedException {
         return (Manuale) super.clone();
     }
 }
